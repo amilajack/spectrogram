@@ -1,7 +1,8 @@
-# Spectrogram
-- Clone the repo
-- Run :$ sudo npm install
-- Run :$ gulp build-all
-- Run :$ gulp
+Spectrogram
+===========
 
-**This is not an official Google product**
+### Local Development
+```bash
+yarn
+yarn build
+```

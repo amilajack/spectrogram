@@ -29,7 +29,6 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-
 /**
  * @fileoverview This file contains a class which assists with the
  * loading of GLSL shaders.
@@ -56,18 +55,18 @@ o3djs.shader = o3djs.shader || {};
  * @param {!string} fragmentScriptName The name of the HTML Script node
  *     containing the fragment program.
  */
-o3djs.shader.loadFromScriptNodes = function(gl,
-                                            vertexScriptName,
-                                            fragmentScriptName) {
-  var vertexScript = document.getElementById(vertexScriptName);
-  var fragmentScript = document.getElementById(fragmentScriptName);
-  if (!vertexScript || !fragmentScript)
+o3djs.shader.loadFromScriptNodes = function(
+  gl,
+  vertexScriptName,
+  fragmentScriptName
+) {
+  const vertexScript = document.getElementById(vertexScriptName);
+  const fragmentScript = document.getElementById(fragmentScriptName);
+  if (!vertexScript || !fragmentScript) {
     return null;
-  return new o3djs.shader.Shader(gl,
-                                 vertexScript.text,
-                                 fragmentScript.text);
-}
-
+  }
+  return new o3djs.shader.Shader(gl, vertexScript.text, fragmentScript.text);
+};
 
 /**
  * Loads text from an external file. This function is synchronous.
@@ -75,8 +74,8 @@ o3djs.shader.loadFromScriptNodes = function(gl,
  * @return {string} the loaded text if the request is synchronous.
  */
 o3djs.shader.loadTextFileSynchronous = function(url) {
-  var error = 'loadTextFileSynchronous failed to load url "' + url + '"';
-  var request;
+  const error = `loadTextFileSynchronous failed to load url "${url}"`;
+  let request;
 
   request = new XMLHttpRequest();
   if (request.overrideMimeType) {
@@ -91,29 +90,23 @@ o3djs.shader.loadTextFileSynchronous = function(url) {
   return request.responseText;
 };
 
+o3djs.shader.loadFromURL = function(gl, vertexURL, fragmentURL) {
+  const vertexText = o3djs.shader.loadTextFileSynchronous(vertexURL);
+  const fragmentText = o3djs.shader.loadTextFileSynchronous(fragmentURL);
 
-o3djs.shader.loadFromURL = function(gl,
-                                    vertexURL,
-                                    fragmentURL) {
-
-  var vertexText = o3djs.shader.loadTextFileSynchronous(vertexURL);
-  var fragmentText = o3djs.shader.loadTextFileSynchronous(fragmentURL);
-
-  if (!vertexText || !fragmentText)
+  if (!vertexText || !fragmentText) {
     return null;
-  return new o3djs.shader.Shader(gl,
-                                 vertexText,
-                                 fragmentText);
-}
-
+  }
+  return new o3djs.shader.Shader(gl, vertexText, fragmentText);
+};
 
 /**
  * Helper which convers GLSL names to JavaScript names.
  * @private
  */
 o3djs.shader.glslNameToJs_ = function(name) {
-  return name.replace(/_(.)/g, function(_, p1) { return p1.toUpperCase(); });
-}
+  return name.replace(/_(.)/g, (_, p1) => p1.toUpperCase());
+};
 
 /**
  * Creates a new Shader object, loading and linking the given vertex
@@ -127,14 +120,14 @@ o3djs.shader.Shader = function(gl, vertex, fragment) {
   this.program = gl.createProgram();
   this.gl = gl;
 
-  var vs = this.loadShader(this.gl.VERTEX_SHADER, vertex);
+  const vs = this.loadShader(this.gl.VERTEX_SHADER, vertex);
   if (vs == null) {
     return;
   }
   this.gl.attachShader(this.program, vs);
   this.gl.deleteShader(vs);
 
-  var fs = this.loadShader(this.gl.FRAGMENT_SHADER, fragment);
+  const fs = this.loadShader(this.gl.FRAGMENT_SHADER, fragment);
   if (fs == null) {
     return;
   }
@@ -145,46 +138,46 @@ o3djs.shader.Shader = function(gl, vertex, fragment) {
   this.gl.useProgram(this.program);
 
   // Check the link status
-  var linked = this.gl.getProgramParameter(this.program, this.gl.LINK_STATUS);
+  const linked = this.gl.getProgramParameter(this.program, this.gl.LINK_STATUS);
   if (!linked) {
-    var infoLog = this.gl.getProgramInfoLog(this.program);
-    output("Error linking program:\n" + infoLog);
+    const infoLog = this.gl.getProgramInfoLog(this.program);
+    output(`Error linking program:\n${infoLog}`);
     this.gl.deleteProgram(this.program);
     this.program = null;
     return;
   }
 
   // find uniforms and attributes
-  var re = /(uniform|attribute)\s+\S+\s+(\S+)\s*;/g;
-  var match = null;
-  while ((match = re.exec(vertex + '\n' + fragment)) != null) {
-    var glslName = match[2];
-    var jsName = o3djs.shader.glslNameToJs_(glslName);
-    var loc = -1;
-    if (match[1] == "uniform") {
-      this[jsName + "Loc"] = this.getUniform(glslName);
-    } else if (match[1] == "attribute") {
-      this[jsName + "Loc"] = this.getAttribute(glslName);
+  const re = /(uniform|attribute)\s+\S+\s+(\S+)\s*;/g;
+  let match = null;
+  while ((match = re.exec(`${vertex}\n${fragment}`)) != null) {
+    const glslName = match[2];
+    const jsName = o3djs.shader.glslNameToJs_(glslName);
+    const loc = -1;
+    if (match[1] == 'uniform') {
+      this[`${jsName}Loc`] = this.getUniform(glslName);
+    } else if (match[1] == 'attribute') {
+      this[`${jsName}Loc`] = this.getAttribute(glslName);
     }
     if (loc >= 0) {
-      this[jsName + "Loc"] = loc;
+      this[`${jsName}Loc`] = loc;
     }
   }
-}
+};
 
 /**
  * Binds the shader's program.
  */
 o3djs.shader.Shader.prototype.bind = function() {
   this.gl.useProgram(this.program);
-}
+};
 
 /**
  * Helper for loading a shader.
  * @private
  */
 o3djs.shader.Shader.prototype.loadShader = function(type, shaderSrc) {
-  var shader = this.gl.createShader(type);
+  const shader = this.gl.createShader(type);
   if (shader == null) {
     return null;
   }
@@ -195,13 +188,13 @@ o3djs.shader.Shader.prototype.loadShader = function(type, shaderSrc) {
   this.gl.compileShader(shader);
   // Check the compile status
   if (!this.gl.getShaderParameter(shader, this.gl.COMPILE_STATUS)) {
-    var infoLog = this.gl.getShaderInfoLog(shader);
-    output("Error compiling shader:\n" + infoLog);
+    const infoLog = this.gl.getShaderInfoLog(shader);
+    output(`Error compiling shader:\n${infoLog}`);
     this.gl.deleteShader(shader);
     return null;
   }
   return shader;
-}
+};
 
 /**
  * Helper for looking up an attribute's location.
@@ -217,4 +210,4 @@ o3djs.shader.Shader.prototype.getAttribute = function(name) {
  */
 o3djs.shader.Shader.prototype.getUniform = function(name) {
   return this.gl.getUniformLocation(this.program, name);
-}
+};

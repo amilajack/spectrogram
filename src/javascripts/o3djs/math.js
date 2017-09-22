@@ -29,7 +29,6 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-
 /**
  * @fileoverview This file contains matrix/vector math functions.
  * It adds them to the "math" module on the o3djs object.
@@ -212,10 +211,12 @@ o3djs.math.Matrix = goog.typedef;
  * @return {number} a random number between 0 and 1
  */
 o3djs.math.pseudoRandom = function() {
-  var math = o3djs.math;
-  return (math.randomSeed_ = 
-          (134775813 * math.randomSeed_ + 1) % 
-          math.RANDOM_RANGE_) / math.RANDOM_RANGE_;
+  const math = o3djs.math;
+  return (
+    (math.randomSeed_ =
+      (134775813 * math.randomSeed_ + 1) % math.RANDOM_RANGE_) /
+    math.RANDOM_RANGE_
+  );
 };
 
 /**
@@ -263,10 +264,11 @@ o3djs.math.lerpScalar = function(a, b, t) {
  * @return {!o3djs.math.Vector} The sum of a and b.
  */
 o3djs.math.addVector = function(a, b) {
-  var r = [];
-  var aLength = a.length;
-  for (var i = 0; i < aLength; ++i)
+  const r = [];
+  const aLength = a.length;
+  for (let i = 0; i < aLength; ++i) {
     r[i] = a[i] + b[i];
+  }
   return r;
 };
 
@@ -277,10 +279,11 @@ o3djs.math.addVector = function(a, b) {
  * @return {!o3djs.math.Vector} The difference of a and b.
  */
 o3djs.math.subVector = function(a, b) {
-  var r = [];
-  var aLength = a.length;
-  for (var i = 0; i < aLength; ++i)
+  const r = [];
+  const aLength = a.length;
+  for (let i = 0; i < aLength; ++i) {
     r[i] = a[i] - b[i];
+  }
   return r;
 };
 
@@ -294,10 +297,11 @@ o3djs.math.subVector = function(a, b) {
  * @return {!o3djs.math.Vector} The weighted sum of a and b.
  */
 o3djs.math.lerpVector = function(a, b, t) {
-  var r = [];
-  var aLength = a.length;
-  for (var i = 0; i < aLength; ++i)
+  const r = [];
+  const aLength = a.length;
+  for (let i = 0; i < aLength; ++i) {
     r[i] = (1 - t) * a[i] + t * b[i];
+  }
   return r;
 };
 
@@ -309,7 +313,7 @@ o3djs.math.lerpVector = function(a, b, t) {
  * @return {number} Clamp modded value.
  */
 o3djs.math.modClamp = function(v, range, opt_rangeStart) {
-  var start = opt_rangeStart || 0;
+  const start = opt_rangeStart || 0;
   if (range < 0.00001) {
     return start;
   }
@@ -317,7 +321,7 @@ o3djs.math.modClamp = function(v, range, opt_rangeStart) {
   if (v < 0) {
     v -= Math.floor(v / range) * range;
   } else {
-    v = v % range;
+    v %= range;
   }
   return v + start;
 };
@@ -335,7 +339,7 @@ o3djs.math.modClamp = function(v, range, opt_rangeStart) {
 o3djs.math.lerpCircular = function(a, b, t, range) {
   a = o3djs.math.modClamp(a, range);
   b = o3djs.math.modClamp(b, range);
-  var delta = b - a;
+  const delta = b - a;
   if (Math.abs(delta) > range * 0.5) {
     if (delta > 0) {
       b -= range;
@@ -364,10 +368,11 @@ o3djs.math.lerpRadian = function(a, b, t) {
  * @return {!o3djs.math.Vector} v The vector v divided by k.
  */
 o3djs.math.divVectorScalar = function(v, k) {
-  var r = [];
-  var vLength = v.length;
-  for (var i = 0; i < vLength; ++i)
+  const r = [];
+  const vLength = v.length;
+  for (let i = 0; i < vLength; ++i) {
     r[i] = v[i] / k;
+  }
   return r;
 };
 
@@ -379,10 +384,11 @@ o3djs.math.divVectorScalar = function(v, k) {
  * @return {number} The dot product of a and b.
  */
 o3djs.math.dot = function(a, b) {
-  var r = 0.0;
-  var aLength = a.length;
-  for (var i = 0; i < aLength; ++i)
+  let r = 0.0;
+  const aLength = a.length;
+  for (let i = 0; i < aLength; ++i) {
     r += a[i] * b[i];
+  }
   return r;
 };
 
@@ -394,9 +400,11 @@ o3djs.math.dot = function(a, b) {
  * @return {!o3djs.math.Vector} The vector a cross b.
  */
 o3djs.math.cross = function(a, b) {
-  return [a[1] * b[2] - a[2] * b[1],
-          a[2] * b[0] - a[0] * b[2],
-          a[0] * b[1] - a[1] * b[0]];
+  return [
+    a[1] * b[2] - a[2] * b[1],
+    a[2] * b[0] - a[0] * b[2],
+    a[0] * b[1] - a[1] * b[0]
+  ];
 };
 
 /**
@@ -406,10 +414,11 @@ o3djs.math.cross = function(a, b) {
  * @return {number} The length of a.
  */
 o3djs.math.length = function(a) {
-  var r = 0.0;
-  var aLength = a.length;
-  for (var i = 0; i < aLength; ++i)
+  let r = 0.0;
+  const aLength = a.length;
+  for (let i = 0; i < aLength; ++i) {
     r += a[i] * a[i];
+  }
   return Math.sqrt(r);
 };
 
@@ -420,10 +429,11 @@ o3djs.math.length = function(a) {
  * @return {number} The square of the length of a.
  */
 o3djs.math.lengthSquared = function(a) {
-  var r = 0.0;
-  var aLength = a.length;
-  for (var i = 0; i < aLength; ++i)
+  let r = 0.0;
+  const aLength = a.length;
+  for (let i = 0; i < aLength; ++i) {
     r += a[i] * a[i];
+  }
   return r;
 };
 
@@ -434,10 +444,10 @@ o3djs.math.lengthSquared = function(a) {
  * @return {number} The distance between a and b.
  */
 o3djs.math.distance = function(a, b) {
-  var r = 0.0;
-  var aLength = a.length;
-  for (var i = 0; i < aLength; ++i) {
-    var t = a[i] - b[i];
+  let r = 0.0;
+  const aLength = a.length;
+  for (let i = 0; i < aLength; ++i) {
+    const t = a[i] - b[i];
     r += t * t;
   }
   return Math.sqrt(r);
@@ -450,10 +460,10 @@ o3djs.math.distance = function(a, b) {
  * @return {number} The distance between a and b.
  */
 o3djs.math.distanceSquared = function(a, b) {
-  var r = 0.0;
-  var aLength = a.length;
-  for (var i = 0; i < aLength; ++i) {
-    var t = a[i] - b[i];
+  let r = 0.0;
+  const aLength = a.length;
+  for (let i = 0; i < aLength; ++i) {
+    const t = a[i] - b[i];
     r += t * t;
   }
   return r;
@@ -465,14 +475,16 @@ o3djs.math.distanceSquared = function(a, b) {
  * @return {!o3djs.math.Vector} The normalized vector.
  */
 o3djs.math.normalize = function(a) {
-  var r = [];
-  var n = 0.0;
-  var aLength = a.length;
-  for (var i = 0; i < aLength; ++i)
+  const r = [];
+  let n = 0.0;
+  const aLength = a.length;
+  for (var i = 0; i < aLength; ++i) {
     n += a[i] * a[i];
+  }
   n = Math.sqrt(n);
-  for (var i = 0; i < aLength; ++i)
+  for (var i = 0; i < aLength; ++i) {
     r[i] = a[i] / n;
+  }
   return r;
 };
 
@@ -483,15 +495,16 @@ o3djs.math.normalize = function(a) {
  * @return {!o3djs.math.Matrix} The sum of a and b.
  */
 o3djs.math.addMatrix = function(a, b) {
-  var r = [];
-  var aLength = a.length;
-  var a0Length = a[0].length;
-  for (var i = 0; i < aLength; ++i) {
-    var row = [];
-    var ai = a[i];
-    var bi = b[i];
-    for (var j = 0; j < a0Length; ++j)
+  const r = [];
+  const aLength = a.length;
+  const a0Length = a[0].length;
+  for (let i = 0; i < aLength; ++i) {
+    const row = [];
+    const ai = a[i];
+    const bi = b[i];
+    for (let j = 0; j < a0Length; ++j) {
       row[j] = ai[j] + bi[j];
+    }
     r[i] = row;
   }
   return r;
@@ -504,15 +517,16 @@ o3djs.math.addMatrix = function(a, b) {
  * @return {!o3djs.math.Matrix} The sum of a and b.
  */
 o3djs.math.subMatrix = function(a, b) {
-  var r = [];
-  var aLength = a.length;
-  var a0Length = a[0].length;
-  for (var i = 0; i < aLength; ++i) {
-    var row = [];
-    var ai = a[i];
-    var bi = b[i];
-    for (var j = 0; j < a0Length; ++j)
+  const r = [];
+  const aLength = a.length;
+  const a0Length = a[0].length;
+  for (let i = 0; i < aLength; ++i) {
+    const row = [];
+    const ai = a[i];
+    const bi = b[i];
+    for (let j = 0; j < a0Length; ++j) {
       row[j] = ai[j] - bi[j];
+    }
     r[i] = row;
   }
   return r;
@@ -528,15 +542,16 @@ o3djs.math.subMatrix = function(a, b) {
  * @return {!o3djs.math.Matrix} The weighted of a and b.
  */
 o3djs.math.lerpMatrix = function(a, b, t) {
-  var r = [];
-  var aLength = a.length;
-  var a0Length = a[0].length;
-  for (var i = 0; i < aLength; ++i) {
-    var row = [];
-    var ai = a[i];
-    var bi = b[i];
-    for (var j = 0; j < a0Length; ++j)
+  const r = [];
+  const aLength = a.length;
+  const a0Length = a[0].length;
+  for (let i = 0; i < aLength; ++i) {
+    const row = [];
+    const ai = a[i];
+    const bi = b[i];
+    for (let j = 0; j < a0Length; ++j) {
       row[j] = (1 - t) * ai[j] + t * bi[j];
+    }
     r[i] = row;
   }
   return r;
@@ -549,13 +564,14 @@ o3djs.math.lerpMatrix = function(a, b, t) {
  * @return {!o3djs.math.Matrix} The matrix m divided by k.
  */
 o3djs.math.divMatrixScalar = function(m, k) {
-  var r = [];
-  var mLength = m.length;
-  var m0Length = m[0].length;
-  for (var i = 0; i < mLength; ++i) {
+  const r = [];
+  const mLength = m.length;
+  const m0Length = m[0].length;
+  for (let i = 0; i < mLength; ++i) {
     r[i] = [];
-    for (var j = 0; j < m0Length; ++j)
+    for (let j = 0; j < m0Length; ++j) {
       r[i][j] = m[i][j] / k;
+    }
   }
   return r;
 };
@@ -566,7 +582,7 @@ o3djs.math.divMatrixScalar = function(m, k) {
  * @return {number} -a.
  */
 o3djs.math.negativeScalar = function(a) {
- return -a;
+  return -a;
 };
 
 /**
@@ -575,12 +591,12 @@ o3djs.math.negativeScalar = function(a) {
  * @return {!o3djs.math.Vector} -v.
  */
 o3djs.math.negativeVector = function(v) {
- var r = [];
- var vLength = v.length;
- for (var i = 0; i < vLength; ++i) {
-   r[i] = -v[i];
- }
- return r;
+  const r = [];
+  const vLength = v.length;
+  for (let i = 0; i < vLength; ++i) {
+    r[i] = -v[i];
+  }
+  return r;
 };
 
 /**
@@ -589,15 +605,16 @@ o3djs.math.negativeVector = function(v) {
  * @return {!o3djs.math.Matrix} -m.
  */
 o3djs.math.negativeMatrix = function(m) {
- var r = [];
- var mLength = m.length;
- var m0Length = m[0].length;
- for (var i = 0; i < mLength; ++i) {
-   r[i] = [];
-   for (var j = 0; j < m0Length; ++j)
-     r[i][j] = -m[i][j];
- }
- return r;
+  const r = [];
+  const mLength = m.length;
+  const m0Length = m[0].length;
+  for (let i = 0; i < mLength; ++i) {
+    r[i] = [];
+    for (let j = 0; j < m0Length; ++j) {
+      r[i][j] = -m[i][j];
+    }
+  }
+  return r;
 };
 
 /**
@@ -615,9 +632,10 @@ o3djs.math.copyScalar = function(a) {
  * @return {!o3djs.math.Vector} A copy of v.
  */
 o3djs.math.copyVector = function(v) {
-  var r = [];
-  for (var i = 0; i < v.length; i++)
+  const r = [];
+  for (let i = 0; i < v.length; i++) {
     r[i] = v[i];
+  }
   return r;
 };
 
@@ -627,11 +645,11 @@ o3djs.math.copyVector = function(v) {
  * @return {!o3djs.math.Matrix} A copy of m.
  */
 o3djs.math.copyMatrix = function(m) {
-  var r = [];
-  var mLength = m.length;
-  for (var i = 0; i < mLength; ++i) {
+  const r = [];
+  const mLength = m.length;
+  for (let i = 0; i < mLength; ++i) {
     r[i] = [];
-    for (var j = 0; j < m[i].length; j++) {
+    for (let j = 0; j < m[i].length; j++) {
       r[i][j] = m[i][j];
     }
   }
@@ -646,11 +664,11 @@ o3djs.math.copyMatrix = function(m) {
  * @return {!Array.<number>} The matrix's elements as a one-dimensional array.
  */
 o3djs.math.getMatrixElements = function(m) {
-  var r = [];
-  var mLength = m.length;
-  var k = 0;
-  for (var i = 0; i < mLength; i++) {
-    for (var j = 0; j < m[i].length; j++) {
+  const r = [];
+  const mLength = m.length;
+  let k = 0;
+  for (let i = 0; i < mLength; i++) {
+    for (let j = 0; j < m[i].length; j++) {
       r[k++] = m[i][j];
     }
   }
@@ -674,9 +692,9 @@ o3djs.math.mulScalarScalar = function(a, b) {
  * @return {!o3djs.math.Vector} The product of k and v.
  */
 o3djs.math.mulScalarVector = function(k, v) {
-  var r = [];
-  var vLength = v.length;
-  for (var i = 0; i < vLength; ++i) {
+  const r = [];
+  const vLength = v.length;
+  for (let i = 0; i < vLength; ++i) {
     r[i] = k * v[i];
   }
   return r;
@@ -699,13 +717,14 @@ o3djs.math.mulVectorScalar = function(v, k) {
  * @return {!o3djs.math.Matrix} The product of m and k.
  */
 o3djs.math.mulScalarMatrix = function(k, m) {
-  var r = [];
-  var mLength = m.length;
-  var m0Length = m[0].length;
-  for (var i = 0; i < mLength; ++i) {
+  const r = [];
+  const mLength = m.length;
+  const m0Length = m[0].length;
+  for (let i = 0; i < mLength; ++i) {
     r[i] = [];
-    for (var j = 0; j < m0Length; ++j)
+    for (let j = 0; j < m0Length; ++j) {
       r[i][j] = k * m[i][j];
+    }
   }
   return r;
 };
@@ -729,10 +748,11 @@ o3djs.math.mulMatrixScalar = function(m, k) {
  *     b.
  */
 o3djs.math.mulVectorVector = function(a, b) {
-  var r = [];
-  var aLength = a.length;
-  for (var i = 0; i < aLength; ++i)
+  const r = [];
+  const aLength = a.length;
+  for (let i = 0; i < aLength; ++i) {
     r[i] = a[i] * b[i];
+  }
   return r;
 };
 
@@ -745,10 +765,11 @@ o3djs.math.mulVectorVector = function(a, b) {
  *     b.
  */
 o3djs.math.divVectorVector = function(a, b) {
-  var r = [];
-  var aLength = a.length;
-  for (var i = 0; i < aLength; ++i)
+  const r = [];
+  const aLength = a.length;
+  for (let i = 0; i < aLength; ++i) {
     r[i] = a[i] / b[i];
+  }
   return r;
 };
 
@@ -760,13 +781,14 @@ o3djs.math.divVectorVector = function(a, b) {
  * @return {!o3djs.math.Vector} The product of v and m as a row vector.
  */
 o3djs.math.rowMajor.mulVectorMatrix = function(v, m) {
-  var r = [];
-  var m0Length = m[0].length;
-  var vLength = v.length;
-  for (var i = 0; i < m0Length; ++i) {
+  const r = [];
+  const m0Length = m[0].length;
+  const vLength = v.length;
+  for (let i = 0; i < m0Length; ++i) {
     r[i] = 0.0;
-    for (var j = 0; j < vLength; ++j)
+    for (let j = 0; j < vLength; ++j) {
       r[i] += v[j] * m[j][i];
+    }
   }
   return r;
 };
@@ -779,14 +801,15 @@ o3djs.math.rowMajor.mulVectorMatrix = function(v, m) {
  * @return {!o3djs.math.Vector} The product of v and m as a row vector.
  */
 o3djs.math.columnMajor.mulVectorMatrix = function(v, m) {
-  var r = [];
-  var mLength = m.length;
-  var vLength = v.length;
-  for (var i = 0; i < mLength; ++i) {
+  const r = [];
+  const mLength = m.length;
+  const vLength = v.length;
+  for (let i = 0; i < mLength; ++i) {
     r[i] = 0.0;
-    var column = m[i];
-    for (var j = 0; j < vLength; ++j)
+    const column = m[i];
+    for (let j = 0; j < vLength; ++j) {
       r[i] += v[j] * column[j];
+    }
   }
   return r;
 };
@@ -807,14 +830,15 @@ o3djs.math.mulVectorMatrix = null;
  * @return {!o3djs.math.Vector} The product of m and v as a column vector.
  */
 o3djs.math.rowMajor.mulMatrixVector = function(m, v) {
-  var r = [];
-  var mLength = m.length;
-  var m0Length = m[0].length;
-  for (var i = 0; i < mLength; ++i) {
+  const r = [];
+  const mLength = m.length;
+  const m0Length = m[0].length;
+  for (let i = 0; i < mLength; ++i) {
     r[i] = 0.0;
-    var row = m[i];
-    for (var j = 0; j < m0Length; ++j)
+    const row = m[i];
+    for (let j = 0; j < m0Length; ++j) {
       r[i] += row[j] * v[j];
+    }
   }
   return r;
 };
@@ -827,13 +851,14 @@ o3djs.math.rowMajor.mulMatrixVector = function(m, v) {
  * @return {!o3djs.math.Vector} The product of m and v as a column vector.
  */
 o3djs.math.columnMajor.mulMatrixVector = function(m, v) {
-  var r = [];
-  var m0Length = m[0].length;
-  var vLength = v.length;
-  for (var i = 0; i < m0Length; ++i) {
+  const r = [];
+  const m0Length = m[0].length;
+  const vLength = v.length;
+  for (let i = 0; i < m0Length; ++i) {
     r[i] = 0.0;
-    for (var j = 0; j < vLength; ++j)
+    for (let j = 0; j < vLength; ++j) {
       r[i] += v[j] * m[j][i];
+    }
   }
   return r;
 };
@@ -854,20 +879,22 @@ o3djs.math.mulMatrixVector = null;
  * @return {!o3djs.math.Matrix2} The matrix product of a and b.
  */
 o3djs.math.rowMajor.mulMatrixMatrix2 = function(a, b) {
-  var a0 = a[0];
-  var a1 = a[1];
-  var b0 = b[0];
-  var b1 = b[1];
-  var a00 = a0[0];
-  var a01 = a0[1];
-  var a10 = a1[0];
-  var a11 = a1[1];
-  var b00 = b0[0];
-  var b01 = b0[1];
-  var b10 = b1[0];
-  var b11 = b1[1];
-  return [[a00 * b00 + a01 * b10, a00 * b01 + a01 * b11],
-          [a10 * b00 + a11 * b10, a10 * b01 + a11 * b11]];
+  const a0 = a[0];
+  const a1 = a[1];
+  const b0 = b[0];
+  const b1 = b[1];
+  const a00 = a0[0];
+  const a01 = a0[1];
+  const a10 = a1[0];
+  const a11 = a1[1];
+  const b00 = b0[0];
+  const b01 = b0[1];
+  const b10 = b1[0];
+  const b11 = b1[1];
+  return [
+    [a00 * b00 + a01 * b10, a00 * b01 + a01 * b11],
+    [a10 * b00 + a11 * b10, a10 * b01 + a11 * b11]
+  ];
 };
 
 /**
@@ -878,20 +905,22 @@ o3djs.math.rowMajor.mulMatrixMatrix2 = function(a, b) {
  * @return {!o3djs.math.Matrix2} The matrix product of a and b.
  */
 o3djs.math.columnMajor.mulMatrixMatrix2 = function(a, b) {
-  var a0 = a[0];
-  var a1 = a[1];
-  var b0 = b[0];
-  var b1 = b[1];
-  var a00 = a0[0];
-  var a01 = a0[1];
-  var a10 = a1[0];
-  var a11 = a1[1];
-  var b00 = b0[0];
-  var b01 = b0[1];
-  var b10 = b1[0];
-  var b11 = b1[1];
-  return [[a00 * b00 + a10 * b01, a01 * b00 + a11 * b01],
-          [a00 * b10 + a10 * b11, a01 * b10 + a11 * b11]];
+  const a0 = a[0];
+  const a1 = a[1];
+  const b0 = b[0];
+  const b1 = b[1];
+  const a00 = a0[0];
+  const a01 = a0[1];
+  const a10 = a1[0];
+  const a11 = a1[1];
+  const b00 = b0[0];
+  const b01 = b0[1];
+  const b10 = b1[0];
+  const b11 = b1[1];
+  return [
+    [a00 * b00 + a10 * b01, a01 * b00 + a11 * b01],
+    [a00 * b10 + a10 * b11, a01 * b10 + a11 * b11]
+  ];
 };
 
 /**
@@ -902,7 +931,6 @@ o3djs.math.columnMajor.mulMatrixMatrix2 = function(a, b) {
  */
 o3djs.math.mulMatrixMatrix2 = null;
 
-
 /**
  * Multiplies two 3-by-3 matrices; assumes that the given matrices are 3-by-3;
  * assumes matrix entries are accessed in [row][column] fashion.
@@ -911,39 +939,47 @@ o3djs.math.mulMatrixMatrix2 = null;
  * @return {!o3djs.math.Matrix3} The matrix product of a and b.
  */
 o3djs.math.rowMajor.mulMatrixMatrix3 = function(a, b) {
-  var a0 = a[0];
-  var a1 = a[1];
-  var a2 = a[2];
-  var b0 = b[0];
-  var b1 = b[1];
-  var b2 = b[2];
-  var a00 = a0[0];
-  var a01 = a0[1];
-  var a02 = a0[2];
-  var a10 = a1[0];
-  var a11 = a1[1];
-  var a12 = a1[2];
-  var a20 = a2[0];
-  var a21 = a2[1];
-  var a22 = a2[2];
-  var b00 = b0[0];
-  var b01 = b0[1];
-  var b02 = b0[2];
-  var b10 = b1[0];
-  var b11 = b1[1];
-  var b12 = b1[2];
-  var b20 = b2[0];
-  var b21 = b2[1];
-  var b22 = b2[2];
-  return [[a00 * b00 + a01 * b10 + a02 * b20,
-           a00 * b01 + a01 * b11 + a02 * b21,
-           a00 * b02 + a01 * b12 + a02 * b22],
-          [a10 * b00 + a11 * b10 + a12 * b20,
-           a10 * b01 + a11 * b11 + a12 * b21,
-           a10 * b02 + a11 * b12 + a12 * b22],
-          [a20 * b00 + a21 * b10 + a22 * b20,
-           a20 * b01 + a21 * b11 + a22 * b21,
-           a20 * b02 + a21 * b12 + a22 * b22]];
+  const a0 = a[0];
+  const a1 = a[1];
+  const a2 = a[2];
+  const b0 = b[0];
+  const b1 = b[1];
+  const b2 = b[2];
+  const a00 = a0[0];
+  const a01 = a0[1];
+  const a02 = a0[2];
+  const a10 = a1[0];
+  const a11 = a1[1];
+  const a12 = a1[2];
+  const a20 = a2[0];
+  const a21 = a2[1];
+  const a22 = a2[2];
+  const b00 = b0[0];
+  const b01 = b0[1];
+  const b02 = b0[2];
+  const b10 = b1[0];
+  const b11 = b1[1];
+  const b12 = b1[2];
+  const b20 = b2[0];
+  const b21 = b2[1];
+  const b22 = b2[2];
+  return [
+    [
+      a00 * b00 + a01 * b10 + a02 * b20,
+      a00 * b01 + a01 * b11 + a02 * b21,
+      a00 * b02 + a01 * b12 + a02 * b22
+    ],
+    [
+      a10 * b00 + a11 * b10 + a12 * b20,
+      a10 * b01 + a11 * b11 + a12 * b21,
+      a10 * b02 + a11 * b12 + a12 * b22
+    ],
+    [
+      a20 * b00 + a21 * b10 + a22 * b20,
+      a20 * b01 + a21 * b11 + a22 * b21,
+      a20 * b02 + a21 * b12 + a22 * b22
+    ]
+  ];
 };
 
 /**
@@ -954,39 +990,47 @@ o3djs.math.rowMajor.mulMatrixMatrix3 = function(a, b) {
  * @return {!o3djs.math.Matrix3} The matrix product of a and b.
  */
 o3djs.math.columnMajor.mulMatrixMatrix3 = function(a, b) {
-  var a0 = a[0];
-  var a1 = a[1];
-  var a2 = a[2];
-  var b0 = b[0];
-  var b1 = b[1];
-  var b2 = b[2];
-  var a00 = a0[0];
-  var a01 = a0[1];
-  var a02 = a0[2];
-  var a10 = a1[0];
-  var a11 = a1[1];
-  var a12 = a1[2];
-  var a20 = a2[0];
-  var a21 = a2[1];
-  var a22 = a2[2];
-  var b00 = b0[0];
-  var b01 = b0[1];
-  var b02 = b0[2];
-  var b10 = b1[0];
-  var b11 = b1[1];
-  var b12 = b1[2];
-  var b20 = b2[0];
-  var b21 = b2[1];
-  var b22 = b2[2];
-  return [[a00 * b00 + a10 * b01 + a20 * b02,
-           a01 * b00 + a11 * b01 + a21 * b02,
-           a02 * b00 + a12 * b01 + a22 * b02],
-          [a00 * b10 + a10 * b11 + a20 * b12,
-           a01 * b10 + a11 * b11 + a21 * b12,
-           a02 * b10 + a12 * b11 + a22 * b12],
-          [a00 * b20 + a10 * b21 + a20 * b22,
-           a01 * b20 + a11 * b21 + a21 * b22,
-           a02 * b20 + a12 * b21 + a22 * b22]];
+  const a0 = a[0];
+  const a1 = a[1];
+  const a2 = a[2];
+  const b0 = b[0];
+  const b1 = b[1];
+  const b2 = b[2];
+  const a00 = a0[0];
+  const a01 = a0[1];
+  const a02 = a0[2];
+  const a10 = a1[0];
+  const a11 = a1[1];
+  const a12 = a1[2];
+  const a20 = a2[0];
+  const a21 = a2[1];
+  const a22 = a2[2];
+  const b00 = b0[0];
+  const b01 = b0[1];
+  const b02 = b0[2];
+  const b10 = b1[0];
+  const b11 = b1[1];
+  const b12 = b1[2];
+  const b20 = b2[0];
+  const b21 = b2[1];
+  const b22 = b2[2];
+  return [
+    [
+      a00 * b00 + a10 * b01 + a20 * b02,
+      a01 * b00 + a11 * b01 + a21 * b02,
+      a02 * b00 + a12 * b01 + a22 * b02
+    ],
+    [
+      a00 * b10 + a10 * b11 + a20 * b12,
+      a01 * b10 + a11 * b11 + a21 * b12,
+      a02 * b10 + a12 * b11 + a22 * b12
+    ],
+    [
+      a00 * b20 + a10 * b21 + a20 * b22,
+      a01 * b20 + a11 * b21 + a21 * b22,
+      a02 * b20 + a12 * b21 + a22 * b22
+    ]
+  ];
 };
 
 /**
@@ -1005,62 +1049,72 @@ o3djs.math.mulMatrixMatrix3 = null;
  * @return {!o3djs.math.Matrix4} The matrix product of a and b.
  */
 o3djs.math.rowMajor.mulMatrixMatrix4 = function(a, b) {
-  var a0 = a[0];
-  var a1 = a[1];
-  var a2 = a[2];
-  var a3 = a[3];
-  var b0 = b[0];
-  var b1 = b[1];
-  var b2 = b[2];
-  var b3 = b[3];
-  var a00 = a0[0];
-  var a01 = a0[1];
-  var a02 = a0[2];
-  var a03 = a0[3];
-  var a10 = a1[0];
-  var a11 = a1[1];
-  var a12 = a1[2];
-  var a13 = a1[3];
-  var a20 = a2[0];
-  var a21 = a2[1];
-  var a22 = a2[2];
-  var a23 = a2[3];
-  var a30 = a3[0];
-  var a31 = a3[1];
-  var a32 = a3[2];
-  var a33 = a3[3];
-  var b00 = b0[0];
-  var b01 = b0[1];
-  var b02 = b0[2];
-  var b03 = b0[3];
-  var b10 = b1[0];
-  var b11 = b1[1];
-  var b12 = b1[2];
-  var b13 = b1[3];
-  var b20 = b2[0];
-  var b21 = b2[1];
-  var b22 = b2[2];
-  var b23 = b2[3];
-  var b30 = b3[0];
-  var b31 = b3[1];
-  var b32 = b3[2];
-  var b33 = b3[3];
-  return [[a00 * b00 + a01 * b10 + a02 * b20 + a03 * b30,
-           a00 * b01 + a01 * b11 + a02 * b21 + a03 * b31,
-           a00 * b02 + a01 * b12 + a02 * b22 + a03 * b32,
-           a00 * b03 + a01 * b13 + a02 * b23 + a03 * b33],
-          [a10 * b00 + a11 * b10 + a12 * b20 + a13 * b30,
-           a10 * b01 + a11 * b11 + a12 * b21 + a13 * b31,
-           a10 * b02 + a11 * b12 + a12 * b22 + a13 * b32,
-           a10 * b03 + a11 * b13 + a12 * b23 + a13 * b33],
-          [a20 * b00 + a21 * b10 + a22 * b20 + a23 * b30,
-           a20 * b01 + a21 * b11 + a22 * b21 + a23 * b31,
-           a20 * b02 + a21 * b12 + a22 * b22 + a23 * b32,
-           a20 * b03 + a21 * b13 + a22 * b23 + a23 * b33],
-          [a30 * b00 + a31 * b10 + a32 * b20 + a33 * b30,
-           a30 * b01 + a31 * b11 + a32 * b21 + a33 * b31,
-           a30 * b02 + a31 * b12 + a32 * b22 + a33 * b32,
-           a30 * b03 + a31 * b13 + a32 * b23 + a33 * b33]];
+  const a0 = a[0];
+  const a1 = a[1];
+  const a2 = a[2];
+  const a3 = a[3];
+  const b0 = b[0];
+  const b1 = b[1];
+  const b2 = b[2];
+  const b3 = b[3];
+  const a00 = a0[0];
+  const a01 = a0[1];
+  const a02 = a0[2];
+  const a03 = a0[3];
+  const a10 = a1[0];
+  const a11 = a1[1];
+  const a12 = a1[2];
+  const a13 = a1[3];
+  const a20 = a2[0];
+  const a21 = a2[1];
+  const a22 = a2[2];
+  const a23 = a2[3];
+  const a30 = a3[0];
+  const a31 = a3[1];
+  const a32 = a3[2];
+  const a33 = a3[3];
+  const b00 = b0[0];
+  const b01 = b0[1];
+  const b02 = b0[2];
+  const b03 = b0[3];
+  const b10 = b1[0];
+  const b11 = b1[1];
+  const b12 = b1[2];
+  const b13 = b1[3];
+  const b20 = b2[0];
+  const b21 = b2[1];
+  const b22 = b2[2];
+  const b23 = b2[3];
+  const b30 = b3[0];
+  const b31 = b3[1];
+  const b32 = b3[2];
+  const b33 = b3[3];
+  return [
+    [
+      a00 * b00 + a01 * b10 + a02 * b20 + a03 * b30,
+      a00 * b01 + a01 * b11 + a02 * b21 + a03 * b31,
+      a00 * b02 + a01 * b12 + a02 * b22 + a03 * b32,
+      a00 * b03 + a01 * b13 + a02 * b23 + a03 * b33
+    ],
+    [
+      a10 * b00 + a11 * b10 + a12 * b20 + a13 * b30,
+      a10 * b01 + a11 * b11 + a12 * b21 + a13 * b31,
+      a10 * b02 + a11 * b12 + a12 * b22 + a13 * b32,
+      a10 * b03 + a11 * b13 + a12 * b23 + a13 * b33
+    ],
+    [
+      a20 * b00 + a21 * b10 + a22 * b20 + a23 * b30,
+      a20 * b01 + a21 * b11 + a22 * b21 + a23 * b31,
+      a20 * b02 + a21 * b12 + a22 * b22 + a23 * b32,
+      a20 * b03 + a21 * b13 + a22 * b23 + a23 * b33
+    ],
+    [
+      a30 * b00 + a31 * b10 + a32 * b20 + a33 * b30,
+      a30 * b01 + a31 * b11 + a32 * b21 + a33 * b31,
+      a30 * b02 + a31 * b12 + a32 * b22 + a33 * b32,
+      a30 * b03 + a31 * b13 + a32 * b23 + a33 * b33
+    ]
+  ];
 };
 
 /**
@@ -1071,62 +1125,72 @@ o3djs.math.rowMajor.mulMatrixMatrix4 = function(a, b) {
  * @return {!o3djs.math.Matrix4} The matrix product of a and b.
  */
 o3djs.math.columnMajor.mulMatrixMatrix4 = function(a, b) {
-  var a0 = a[0];
-  var a1 = a[1];
-  var a2 = a[2];
-  var a3 = a[3];
-  var b0 = b[0];
-  var b1 = b[1];
-  var b2 = b[2];
-  var b3 = b[3];
-  var a00 = a0[0];
-  var a01 = a0[1];
-  var a02 = a0[2];
-  var a03 = a0[3];
-  var a10 = a1[0];
-  var a11 = a1[1];
-  var a12 = a1[2];
-  var a13 = a1[3];
-  var a20 = a2[0];
-  var a21 = a2[1];
-  var a22 = a2[2];
-  var a23 = a2[3];
-  var a30 = a3[0];
-  var a31 = a3[1];
-  var a32 = a3[2];
-  var a33 = a3[3];
-  var b00 = b0[0];
-  var b01 = b0[1];
-  var b02 = b0[2];
-  var b03 = b0[3];
-  var b10 = b1[0];
-  var b11 = b1[1];
-  var b12 = b1[2];
-  var b13 = b1[3];
-  var b20 = b2[0];
-  var b21 = b2[1];
-  var b22 = b2[2];
-  var b23 = b2[3];
-  var b30 = b3[0];
-  var b31 = b3[1];
-  var b32 = b3[2];
-  var b33 = b3[3];
-  return [[a00 * b00 + a10 * b01 + a20 * b02 + a30 * b03,
-           a01 * b00 + a11 * b01 + a21 * b02 + a31 * b03,
-           a02 * b00 + a12 * b01 + a22 * b02 + a32 * b03,
-           a03 * b00 + a13 * b01 + a23 * b02 + a33 * b03],
-          [a00 * b10 + a10 * b11 + a20 * b12 + a30 * b13,
-           a01 * b10 + a11 * b11 + a21 * b12 + a31 * b13,
-           a02 * b10 + a12 * b11 + a22 * b12 + a32 * b13,
-           a03 * b10 + a13 * b11 + a23 * b12 + a33 * b13],
-          [a00 * b20 + a10 * b21 + a20 * b22 + a30 * b23,
-           a01 * b20 + a11 * b21 + a21 * b22 + a31 * b23,
-           a02 * b20 + a12 * b21 + a22 * b22 + a32 * b23,
-           a03 * b20 + a13 * b21 + a23 * b22 + a33 * b23],
-          [a00 * b30 + a10 * b31 + a20 * b32 + a30 * b33,
-           a01 * b30 + a11 * b31 + a21 * b32 + a31 * b33,
-           a02 * b30 + a12 * b31 + a22 * b32 + a32 * b33,
-           a03 * b30 + a13 * b31 + a23 * b32 + a33 * b33]];
+  const a0 = a[0];
+  const a1 = a[1];
+  const a2 = a[2];
+  const a3 = a[3];
+  const b0 = b[0];
+  const b1 = b[1];
+  const b2 = b[2];
+  const b3 = b[3];
+  const a00 = a0[0];
+  const a01 = a0[1];
+  const a02 = a0[2];
+  const a03 = a0[3];
+  const a10 = a1[0];
+  const a11 = a1[1];
+  const a12 = a1[2];
+  const a13 = a1[3];
+  const a20 = a2[0];
+  const a21 = a2[1];
+  const a22 = a2[2];
+  const a23 = a2[3];
+  const a30 = a3[0];
+  const a31 = a3[1];
+  const a32 = a3[2];
+  const a33 = a3[3];
+  const b00 = b0[0];
+  const b01 = b0[1];
+  const b02 = b0[2];
+  const b03 = b0[3];
+  const b10 = b1[0];
+  const b11 = b1[1];
+  const b12 = b1[2];
+  const b13 = b1[3];
+  const b20 = b2[0];
+  const b21 = b2[1];
+  const b22 = b2[2];
+  const b23 = b2[3];
+  const b30 = b3[0];
+  const b31 = b3[1];
+  const b32 = b3[2];
+  const b33 = b3[3];
+  return [
+    [
+      a00 * b00 + a10 * b01 + a20 * b02 + a30 * b03,
+      a01 * b00 + a11 * b01 + a21 * b02 + a31 * b03,
+      a02 * b00 + a12 * b01 + a22 * b02 + a32 * b03,
+      a03 * b00 + a13 * b01 + a23 * b02 + a33 * b03
+    ],
+    [
+      a00 * b10 + a10 * b11 + a20 * b12 + a30 * b13,
+      a01 * b10 + a11 * b11 + a21 * b12 + a31 * b13,
+      a02 * b10 + a12 * b11 + a22 * b12 + a32 * b13,
+      a03 * b10 + a13 * b11 + a23 * b12 + a33 * b13
+    ],
+    [
+      a00 * b20 + a10 * b21 + a20 * b22 + a30 * b23,
+      a01 * b20 + a11 * b21 + a21 * b22 + a31 * b23,
+      a02 * b20 + a12 * b21 + a22 * b22 + a32 * b23,
+      a03 * b20 + a13 * b21 + a23 * b22 + a33 * b23
+    ],
+    [
+      a00 * b30 + a10 * b31 + a20 * b32 + a30 * b33,
+      a01 * b30 + a11 * b31 + a21 * b32 + a31 * b33,
+      a02 * b30 + a12 * b31 + a22 * b32 + a32 * b33,
+      a03 * b30 + a13 * b31 + a23 * b32 + a33 * b33
+    ]
+  ];
 };
 
 /**
@@ -1146,17 +1210,18 @@ o3djs.math.mulMatrixMatrix4 = null;
  * @return {!o3djs.math.Matrix} The matrix product of a and b.
  */
 o3djs.math.rowMajor.mulMatrixMatrix = function(a, b) {
-  var r = [];
-  var aRows = a.length;
-  var bColumns = b[0].length;
-  var bRows = b.length;
-  for (var i = 0; i < aRows; ++i) {
-    var v = [];    // v becomes a row of the answer.
-    var ai = a[i]; // ith row of a.
-    for (var j = 0; j < bColumns; ++j) {
+  const r = [];
+  const aRows = a.length;
+  const bColumns = b[0].length;
+  const bRows = b.length;
+  for (let i = 0; i < aRows; ++i) {
+    const v = []; // v becomes a row of the answer.
+    const ai = a[i]; // ith row of a.
+    for (let j = 0; j < bColumns; ++j) {
       v[j] = 0.0;
-      for (var k = 0; k < bRows; ++k)
-        v[j] += ai[k] * b[k][j]; // kth row, jth column.
+      for (let k = 0; k < bRows; ++k) {
+        v[j] += ai[k] * b[k][j];
+      } // kth row, jth column.
     }
     r[i] = v;
   }
@@ -1172,17 +1237,18 @@ o3djs.math.rowMajor.mulMatrixMatrix = function(a, b) {
  * @return {!o3djs.math.Matrix} The matrix product of a and b.
  */
 o3djs.math.columnMajor.mulMatrixMatrix = function(a, b) {
-  var r = [];
-  var bColumns = b.length;
-  var aRows = a[0].length;
-  var aColumns = a.length;
-  for (var i = 0; i < bColumns; ++i) {
-    var v = [];    // v becomes a column of the answer.
-    var bi = b[i]; // ith column of b.
-    for (var j = 0; j < aRows; ++j) {
+  const r = [];
+  const bColumns = b.length;
+  const aRows = a[0].length;
+  const aColumns = a.length;
+  for (let i = 0; i < bColumns; ++i) {
+    const v = []; // v becomes a column of the answer.
+    const bi = b[i]; // ith column of b.
+    for (let j = 0; j < aRows; ++j) {
       v[j] = 0.0;
-      for (var k = 0; k < aColumns; ++k)
-        v[j] += bi[k] * a[k][j]; // kth column, jth row.
+      for (let k = 0; k < aColumns; ++k) {
+        v[j] += bi[k] * a[k][j];
+      } // kth column, jth row.
     }
     r[i] = v;
   }
@@ -1206,9 +1272,9 @@ o3djs.math.mulMatrixMatrix = null;
  * @return {!o3djs.math.Vector} The jth column of m as a vector.
  */
 o3djs.math.rowMajor.column = function(m, j) {
-  var r = [];
-  var mLength = m.length;
-  for (var i = 0; i < mLength; ++i) {
+  const r = [];
+  const mLength = m.length;
+  for (let i = 0; i < mLength; ++i) {
     r[i] = m[i][j];
   }
   return r;
@@ -1252,9 +1318,9 @@ o3djs.math.rowMajor.row = function(m, i) {
  * @return {!o3djs.math.Vector} The ith row of m.
  */
 o3djs.math.columnMajor.row = function(m, i) {
-  var r = [];
-  var mLength = m.length;
-  for (var j = 0; j < mLength; ++j) {
+  const r = [];
+  const mLength = m.length;
+  for (let j = 0; j < mLength; ++j) {
     r[j] = m[j][i];
   }
   return r;
@@ -1274,11 +1340,12 @@ o3djs.math.row = null;
  * @return {!o3djs.math.Matrix} An n-by-n identity matrix.
  */
 o3djs.math.identity = function(n) {
-  var r = [];
-  for (var j = 0; j < n; ++j) {
+  const r = [];
+  for (let j = 0; j < n; ++j) {
     r[j] = [];
-    for (var i = 0; i < n; ++i)
-      r[j][i] = (i == j) ? 1 : 0;
+    for (let i = 0; i < n; ++i) {
+      r[j][i] = i == j ? 1 : 0;
+    }
   }
   return r;
 };
@@ -1289,13 +1356,14 @@ o3djs.math.identity = function(n) {
  * @return {!o3djs.math.Matrix} The transpose of m.
  */
 o3djs.math.transpose = function(m) {
-  var r = [];
-  var m0Length = m[0].length;
-  var mLength = m.length;
-  for (var j = 0; j < m0Length; ++j) {
+  const r = [];
+  const m0Length = m[0].length;
+  const mLength = m.length;
+  for (let j = 0; j < m0Length; ++j) {
     r[j] = [];
-    for (var i = 0; i < mLength; ++i)
+    for (let i = 0; i < mLength; ++i) {
       r[j][i] = m[i][j];
+    }
   }
   return r;
 };
@@ -1307,10 +1375,11 @@ o3djs.math.transpose = function(m) {
  * @return {number} The trace of m.
  */
 o3djs.math.trace = function(m) {
-  var r = 0.0;
-  var mLength = m.length;
-  for (var i = 0; i < mLength; ++i)
+  let r = 0.0;
+  const mLength = m.length;
+  for (let i = 0; i < mLength; ++i) {
     r += m[i][i];
+  }
   return r;
 };
 
@@ -1338,9 +1407,11 @@ o3djs.math.det2 = function(m) {
  * @return {number} The determinant of m.
  */
 o3djs.math.det3 = function(m) {
-  return m[2][2] * (m[0][0] * m[1][1] - m[0][1] * m[1][0]) -
-         m[2][1] * (m[0][0] * m[1][2] - m[0][2] * m[1][0]) +
-         m[2][0] * (m[0][1] * m[1][2] - m[0][2] * m[1][1]);
+  return (
+    m[2][2] * (m[0][0] * m[1][1] - m[0][1] * m[1][0]) -
+    m[2][1] * (m[0][0] * m[1][2] - m[0][2] * m[1][0]) +
+    m[2][0] * (m[0][1] * m[1][2] - m[0][2] * m[1][1])
+  );
 };
 
 /**
@@ -1349,16 +1420,18 @@ o3djs.math.det3 = function(m) {
  * @return {number} The determinant of m.
  */
 o3djs.math.det4 = function(m) {
-  var t01 = m[0][0] * m[1][1] - m[0][1] * m[1][0];
-  var t02 = m[0][0] * m[1][2] - m[0][2] * m[1][0];
-  var t03 = m[0][0] * m[1][3] - m[0][3] * m[1][0];
-  var t12 = m[0][1] * m[1][2] - m[0][2] * m[1][1];
-  var t13 = m[0][1] * m[1][3] - m[0][3] * m[1][1];
-  var t23 = m[0][2] * m[1][3] - m[0][3] * m[1][2];
-  return m[3][3] * (m[2][2] * t01 - m[2][1] * t02 + m[2][0] * t12) -
-         m[3][2] * (m[2][3] * t01 - m[2][1] * t03 + m[2][0] * t13) +
-         m[3][1] * (m[2][3] * t02 - m[2][2] * t03 + m[2][0] * t23) -
-         m[3][0] * (m[2][3] * t12 - m[2][2] * t13 + m[2][1] * t23);
+  const t01 = m[0][0] * m[1][1] - m[0][1] * m[1][0];
+  const t02 = m[0][0] * m[1][2] - m[0][2] * m[1][0];
+  const t03 = m[0][0] * m[1][3] - m[0][3] * m[1][0];
+  const t12 = m[0][1] * m[1][2] - m[0][2] * m[1][1];
+  const t13 = m[0][1] * m[1][3] - m[0][3] * m[1][1];
+  const t23 = m[0][2] * m[1][3] - m[0][3] * m[1][2];
+  return (
+    m[3][3] * (m[2][2] * t01 - m[2][1] * t02 + m[2][0] * t12) -
+    m[3][2] * (m[2][3] * t01 - m[2][1] * t03 + m[2][0] * t13) +
+    m[3][1] * (m[2][3] * t02 - m[2][2] * t03 + m[2][0] * t23) -
+    m[3][0] * (m[2][3] * t12 - m[2][2] * t13 + m[2][1] * t23)
+  );
 };
 
 /**
@@ -1376,7 +1449,7 @@ o3djs.math.inverse1 = function(m) {
  * @return {!o3djs.math.Matrix2} The inverse of m.
  */
 o3djs.math.inverse2 = function(m) {
-  var d = 1.0 / (m[0][0] * m[1][1] - m[0][1] * m[1][0]);
+  const d = 1.0 / (m[0][0] * m[1][1] - m[0][1] * m[1][0]);
   return [[d * m[1][1], -d * m[0][1]], [-d * m[1][0], d * m[0][0]]];
 };
 
@@ -1386,17 +1459,23 @@ o3djs.math.inverse2 = function(m) {
  * @return {!o3djs.math.Matrix3} The inverse of m.
  */
 o3djs.math.inverse3 = function(m) {
-  var t00 = m[1][1] * m[2][2] - m[1][2] * m[2][1];
-  var t10 = m[0][1] * m[2][2] - m[0][2] * m[2][1];
-  var t20 = m[0][1] * m[1][2] - m[0][2] * m[1][1];
-  var d = 1.0 / (m[0][0] * t00 - m[1][0] * t10 + m[2][0] * t20);
-  return [[d * t00, -d * t10, d * t20],
-          [-d * (m[1][0] * m[2][2] - m[1][2] * m[2][0]),
-            d * (m[0][0] * m[2][2] - m[0][2] * m[2][0]),
-           -d * (m[0][0] * m[1][2] - m[0][2] * m[1][0])],
-          [d * (m[1][0] * m[2][1] - m[1][1] * m[2][0]),
-          -d * (m[0][0] * m[2][1] - m[0][1] * m[2][0]),
-           d * (m[0][0] * m[1][1] - m[0][1] * m[1][0])]];
+  const t00 = m[1][1] * m[2][2] - m[1][2] * m[2][1];
+  const t10 = m[0][1] * m[2][2] - m[0][2] * m[2][1];
+  const t20 = m[0][1] * m[1][2] - m[0][2] * m[1][1];
+  const d = 1.0 / (m[0][0] * t00 - m[1][0] * t10 + m[2][0] * t20);
+  return [
+    [d * t00, -d * t10, d * t20],
+    [
+      -d * (m[1][0] * m[2][2] - m[1][2] * m[2][0]),
+      d * (m[0][0] * m[2][2] - m[0][2] * m[2][0]),
+      -d * (m[0][0] * m[1][2] - m[0][2] * m[1][0])
+    ],
+    [
+      d * (m[1][0] * m[2][1] - m[1][1] * m[2][0]),
+      -d * (m[0][0] * m[2][1] - m[0][1] * m[2][0]),
+      d * (m[0][0] * m[1][1] - m[0][1] * m[1][0])
+    ]
+  ];
 };
 
 /**
@@ -1405,67 +1484,123 @@ o3djs.math.inverse3 = function(m) {
  * @return {!o3djs.math.Matrix4} The inverse of m.
  */
 o3djs.math.inverse4 = function(m) {
-  var tmp_0 = m[2][2] * m[3][3];
-  var tmp_1 = m[3][2] * m[2][3];
-  var tmp_2 = m[1][2] * m[3][3];
-  var tmp_3 = m[3][2] * m[1][3];
-  var tmp_4 = m[1][2] * m[2][3];
-  var tmp_5 = m[2][2] * m[1][3];
-  var tmp_6 = m[0][2] * m[3][3];
-  var tmp_7 = m[3][2] * m[0][3];
-  var tmp_8 = m[0][2] * m[2][3];
-  var tmp_9 = m[2][2] * m[0][3];
-  var tmp_10 = m[0][2] * m[1][3];
-  var tmp_11 = m[1][2] * m[0][3];
-  var tmp_12 = m[2][0] * m[3][1];
-  var tmp_13 = m[3][0] * m[2][1];
-  var tmp_14 = m[1][0] * m[3][1];
-  var tmp_15 = m[3][0] * m[1][1];
-  var tmp_16 = m[1][0] * m[2][1];
-  var tmp_17 = m[2][0] * m[1][1];
-  var tmp_18 = m[0][0] * m[3][1];
-  var tmp_19 = m[3][0] * m[0][1];
-  var tmp_20 = m[0][0] * m[2][1];
-  var tmp_21 = m[2][0] * m[0][1];
-  var tmp_22 = m[0][0] * m[1][1];
-  var tmp_23 = m[1][0] * m[0][1];
+  const tmp_0 = m[2][2] * m[3][3];
+  const tmp_1 = m[3][2] * m[2][3];
+  const tmp_2 = m[1][2] * m[3][3];
+  const tmp_3 = m[3][2] * m[1][3];
+  const tmp_4 = m[1][2] * m[2][3];
+  const tmp_5 = m[2][2] * m[1][3];
+  const tmp_6 = m[0][2] * m[3][3];
+  const tmp_7 = m[3][2] * m[0][3];
+  const tmp_8 = m[0][2] * m[2][3];
+  const tmp_9 = m[2][2] * m[0][3];
+  const tmp_10 = m[0][2] * m[1][3];
+  const tmp_11 = m[1][2] * m[0][3];
+  const tmp_12 = m[2][0] * m[3][1];
+  const tmp_13 = m[3][0] * m[2][1];
+  const tmp_14 = m[1][0] * m[3][1];
+  const tmp_15 = m[3][0] * m[1][1];
+  const tmp_16 = m[1][0] * m[2][1];
+  const tmp_17 = m[2][0] * m[1][1];
+  const tmp_18 = m[0][0] * m[3][1];
+  const tmp_19 = m[3][0] * m[0][1];
+  const tmp_20 = m[0][0] * m[2][1];
+  const tmp_21 = m[2][0] * m[0][1];
+  const tmp_22 = m[0][0] * m[1][1];
+  const tmp_23 = m[1][0] * m[0][1];
 
-  var t0 = (tmp_0 * m[1][1] + tmp_3 * m[2][1] + tmp_4 * m[3][1]) -
-      (tmp_1 * m[1][1] + tmp_2 * m[2][1] + tmp_5 * m[3][1]);
-  var t1 = (tmp_1 * m[0][1] + tmp_6 * m[2][1] + tmp_9 * m[3][1]) -
-      (tmp_0 * m[0][1] + tmp_7 * m[2][1] + tmp_8 * m[3][1]);
-  var t2 = (tmp_2 * m[0][1] + tmp_7 * m[1][1] + tmp_10 * m[3][1]) -
-      (tmp_3 * m[0][1] + tmp_6 * m[1][1] + tmp_11 * m[3][1]);
-  var t3 = (tmp_5 * m[0][1] + tmp_8 * m[1][1] + tmp_11 * m[2][1]) -
-      (tmp_4 * m[0][1] + tmp_9 * m[1][1] + tmp_10 * m[2][1]);
+  const t0 =
+    tmp_0 * m[1][1] +
+    tmp_3 * m[2][1] +
+    tmp_4 * m[3][1] -
+    (tmp_1 * m[1][1] + tmp_2 * m[2][1] + tmp_5 * m[3][1]);
+  const t1 =
+    tmp_1 * m[0][1] +
+    tmp_6 * m[2][1] +
+    tmp_9 * m[3][1] -
+    (tmp_0 * m[0][1] + tmp_7 * m[2][1] + tmp_8 * m[3][1]);
+  const t2 =
+    tmp_2 * m[0][1] +
+    tmp_7 * m[1][1] +
+    tmp_10 * m[3][1] -
+    (tmp_3 * m[0][1] + tmp_6 * m[1][1] + tmp_11 * m[3][1]);
+  const t3 =
+    tmp_5 * m[0][1] +
+    tmp_8 * m[1][1] +
+    tmp_11 * m[2][1] -
+    (tmp_4 * m[0][1] + tmp_9 * m[1][1] + tmp_10 * m[2][1]);
 
-  var d = 1.0 / (m[0][0] * t0 + m[1][0] * t1 + m[2][0] * t2 + m[3][0] * t3);
+  const d = 1.0 / (m[0][0] * t0 + m[1][0] * t1 + m[2][0] * t2 + m[3][0] * t3);
 
-  return [[d * t0, d * t1, d * t2, d * t3],
-      [d * ((tmp_1 * m[1][0] + tmp_2 * m[2][0] + tmp_5 * m[3][0]) -
+  return [
+    [d * t0, d * t1, d * t2, d * t3],
+    [
+      d *
+        (tmp_1 * m[1][0] +
+          tmp_2 * m[2][0] +
+          tmp_5 * m[3][0] -
           (tmp_0 * m[1][0] + tmp_3 * m[2][0] + tmp_4 * m[3][0])),
-       d * ((tmp_0 * m[0][0] + tmp_7 * m[2][0] + tmp_8 * m[3][0]) -
+      d *
+        (tmp_0 * m[0][0] +
+          tmp_7 * m[2][0] +
+          tmp_8 * m[3][0] -
           (tmp_1 * m[0][0] + tmp_6 * m[2][0] + tmp_9 * m[3][0])),
-       d * ((tmp_3 * m[0][0] + tmp_6 * m[1][0] + tmp_11 * m[3][0]) -
+      d *
+        (tmp_3 * m[0][0] +
+          tmp_6 * m[1][0] +
+          tmp_11 * m[3][0] -
           (tmp_2 * m[0][0] + tmp_7 * m[1][0] + tmp_10 * m[3][0])),
-       d * ((tmp_4 * m[0][0] + tmp_9 * m[1][0] + tmp_10 * m[2][0]) -
-          (tmp_5 * m[0][0] + tmp_8 * m[1][0] + tmp_11 * m[2][0]))],
-      [d * ((tmp_12 * m[1][3] + tmp_15 * m[2][3] + tmp_16 * m[3][3]) -
+      d *
+        (tmp_4 * m[0][0] +
+          tmp_9 * m[1][0] +
+          tmp_10 * m[2][0] -
+          (tmp_5 * m[0][0] + tmp_8 * m[1][0] + tmp_11 * m[2][0]))
+    ],
+    [
+      d *
+        (tmp_12 * m[1][3] +
+          tmp_15 * m[2][3] +
+          tmp_16 * m[3][3] -
           (tmp_13 * m[1][3] + tmp_14 * m[2][3] + tmp_17 * m[3][3])),
-       d * ((tmp_13 * m[0][3] + tmp_18 * m[2][3] + tmp_21 * m[3][3]) -
+      d *
+        (tmp_13 * m[0][3] +
+          tmp_18 * m[2][3] +
+          tmp_21 * m[3][3] -
           (tmp_12 * m[0][3] + tmp_19 * m[2][3] + tmp_20 * m[3][3])),
-       d * ((tmp_14 * m[0][3] + tmp_19 * m[1][3] + tmp_22 * m[3][3]) -
+      d *
+        (tmp_14 * m[0][3] +
+          tmp_19 * m[1][3] +
+          tmp_22 * m[3][3] -
           (tmp_15 * m[0][3] + tmp_18 * m[1][3] + tmp_23 * m[3][3])),
-       d * ((tmp_17 * m[0][3] + tmp_20 * m[1][3] + tmp_23 * m[2][3]) -
-          (tmp_16 * m[0][3] + tmp_21 * m[1][3] + tmp_22 * m[2][3]))],
-      [d * ((tmp_14 * m[2][2] + tmp_17 * m[3][2] + tmp_13 * m[1][2]) -
+      d *
+        (tmp_17 * m[0][3] +
+          tmp_20 * m[1][3] +
+          tmp_23 * m[2][3] -
+          (tmp_16 * m[0][3] + tmp_21 * m[1][3] + tmp_22 * m[2][3]))
+    ],
+    [
+      d *
+        (tmp_14 * m[2][2] +
+          tmp_17 * m[3][2] +
+          tmp_13 * m[1][2] -
           (tmp_16 * m[3][2] + tmp_12 * m[1][2] + tmp_15 * m[2][2])),
-       d * ((tmp_20 * m[3][2] + tmp_12 * m[0][2] + tmp_19 * m[2][2]) -
+      d *
+        (tmp_20 * m[3][2] +
+          tmp_12 * m[0][2] +
+          tmp_19 * m[2][2] -
           (tmp_18 * m[2][2] + tmp_21 * m[3][2] + tmp_13 * m[0][2])),
-       d * ((tmp_18 * m[1][2] + tmp_23 * m[3][2] + tmp_15 * m[0][2]) -
+      d *
+        (tmp_18 * m[1][2] +
+          tmp_23 * m[3][2] +
+          tmp_15 * m[0][2] -
           (tmp_22 * m[3][2] + tmp_14 * m[0][2] + tmp_19 * m[1][2])),
-       d * ((tmp_22 * m[2][2] + tmp_16 * m[0][2] + tmp_21 * m[1][2]) -
-          (tmp_20 * m[1][2] + tmp_23 * m[2][2] + tmp_17 * m[0][2]))]];
+      d *
+        (tmp_22 * m[2][2] +
+          tmp_16 * m[0][2] +
+          tmp_21 * m[1][2] -
+          (tmp_20 * m[1][2] + tmp_23 * m[2][2] + tmp_17 * m[0][2]))
+    ]
+  ];
 };
 
 /**
@@ -1479,17 +1614,19 @@ o3djs.math.inverse4 = function(m) {
  *     row x and column y from a.
  */
 o3djs.math.codet = function(a, x, y) {
-  var size = a.length;
-  var b = [];
-  var ai = 0;
-  for (var bi = 0; bi < size - 1; ++bi) {
-    if (ai == x)
+  const size = a.length;
+  const b = [];
+  let ai = 0;
+  for (let bi = 0; bi < size - 1; ++bi) {
+    if (ai == x) {
       ai++;
+    }
     b[bi] = [];
-    var aj = 0;
-    for (var bj = 0; bj < size - 1; ++bj) {
-      if (aj == y)
+    let aj = 0;
+    for (let bj = 0; bj < size - 1; ++bj) {
+      if (aj == y) {
         aj++;
+      }
       b[bi][bj] = a[ai][aj];
       aj++;
     }
@@ -1504,15 +1641,15 @@ o3djs.math.codet = function(a, x, y) {
  * @return {number} the determinant of m.
  */
 o3djs.math.det = function(m) {
-  var d = m.length;
+  const d = m.length;
   if (d <= 4) {
-    return o3djs.math['det' + d](m);
+    return o3djs.math[`det${d}`](m);
   }
-  var r = 0.0;
-  var sign = 1;
-  var row = m[0];
-  var mLength = m.length;
-  for (var y = 0; y < mLength; y++) {
+  let r = 0.0;
+  let sign = 1;
+  const row = m[0];
+  const mLength = m.length;
+  for (let y = 0; y < mLength; y++) {
     r += sign * row[y] * o3djs.math.codet(m, 0, y);
     sign *= -1;
   }
@@ -1525,16 +1662,17 @@ o3djs.math.det = function(m) {
  * @return {!o3djs.math.Matrix} The inverse of m.
  */
 o3djs.math.inverse = function(m) {
-  var d = m.length;
+  const d = m.length;
   if (d <= 4) {
-    return o3djs.math['inverse' + d](m);
+    return o3djs.math[`inverse${d}`](m);
   }
-  var r = [];
-  var size = m.length;
-  for (var j = 0; j < size; ++j) {
+  const r = [];
+  const size = m.length;
+  for (let j = 0; j < size; ++j) {
     r[j] = [];
-    for (var i = 0; i < size; ++i)
+    for (let i = 0; i < size; ++i) {
       r[j][i] = ((i + j) % 2 ? -1 : 1) * o3djs.math.codet(m, i, j);
+    }
   }
   return o3djs.math.divMatrixScalar(r, o3djs.math.det(m));
 };
@@ -1550,13 +1688,15 @@ o3djs.math.inverse = function(m) {
  *     rows of m by the Graham-Schmidt process.
  */
 o3djs.math.orthonormalize = function(m) {
-  var r = [];
-  var mLength = m.length;
-  for (var i = 0; i < mLength; ++i) {
-    var v = m[i];
-    for (var j = 0; j < i; ++j) {
-      v = o3djs.math.subVector(v, o3djs.math.mulScalarVector(
-          o3djs.math.dot(r[j], m[i]), r[j]));
+  const r = [];
+  const mLength = m.length;
+  for (let i = 0; i < mLength; ++i) {
+    let v = m[i];
+    for (let j = 0; j < i; ++j) {
+      v = o3djs.math.subVector(
+        v,
+        o3djs.math.mulScalarVector(o3djs.math.dot(r[j], m[i]), r[j])
+      );
     }
     r[i] = o3djs.math.normalize(v);
   }
@@ -1612,9 +1752,9 @@ o3djs.math.matrix4.copy = function(m) {
  * @return {!o3djs.math.Matrix4} a once modified.
  */
 o3djs.math.matrix4.setUpper3x3 = function(a, b) {
-  var b0 = b[0];
-  var b1 = b[1];
-  var b2 = b[2];
+  const b0 = b[0];
+  const b1 = b[1];
+  const b2 = b[2];
 
   a[0].splice(0, 3, b0[0], b0[1], b0[2]);
   a[1].splice(0, 3, b1[0], b1[1], b1[2]);
@@ -1664,18 +1804,20 @@ o3djs.math.matrix4.getTranslation = function(m) {
  * @return {!o3djs.math.Vector3} The transformed point.
  */
 o3djs.math.matrix4.transformPoint = function(m, v) {
-  var v0 = v[0];
-  var v1 = v[1];
-  var v2 = v[2];
-  var m0 = m[0];
-  var m1 = m[1];
-  var m2 = m[2];
-  var m3 = m[3];
+  const v0 = v[0];
+  const v1 = v[1];
+  const v2 = v[2];
+  const m0 = m[0];
+  const m1 = m[1];
+  const m2 = m[2];
+  const m3 = m[3];
 
-  var d = v0 * m0[3] + v1 * m1[3] + v2 * m2[3] + m3[3];
-  return [(v0 * m0[0] + v1 * m1[0] + v2 * m2[0] + m3[0]) / d,
-          (v0 * m0[1] + v1 * m1[1] + v2 * m2[1] + m3[1]) / d,
-          (v0 * m0[2] + v1 * m1[2] + v2 * m2[2] + m3[2]) / d];
+  const d = v0 * m0[3] + v1 * m1[3] + v2 * m2[3] + m3[3];
+  return [
+    (v0 * m0[0] + v1 * m1[0] + v2 * m2[0] + m3[0]) / d,
+    (v0 * m0[1] + v1 * m1[1] + v2 * m2[1] + m3[1]) / d,
+    (v0 * m0[2] + v1 * m1[2] + v2 * m2[2] + m3[2]) / d
+  ];
 };
 
 /**
@@ -1687,19 +1829,21 @@ o3djs.math.matrix4.transformPoint = function(m, v) {
  *     coordinates.
  */
 o3djs.math.matrix4.transformVector4 = function(m, v) {
-  var v0 = v[0];
-  var v1 = v[1];
-  var v2 = v[2];
-  var v3 = v[3];
-  var m0 = m[0];
-  var m1 = m[1];
-  var m2 = m[2];
-  var m3 = m[3];
+  const v0 = v[0];
+  const v1 = v[1];
+  const v2 = v[2];
+  const v3 = v[3];
+  const m0 = m[0];
+  const m1 = m[1];
+  const m2 = m[2];
+  const m3 = m[3];
 
-  return [v0 * m0[0] + v1 * m1[0] + v2 * m2[0] + v3 * m3[0],
-          v0 * m0[1] + v1 * m1[1] + v2 * m2[1] + v3 * m3[1],
-          v0 * m0[2] + v1 * m1[2] + v2 * m2[2] + v3 * m3[2],
-          v0 * m0[3] + v1 * m1[3] + v2 * m2[3] + v3 * m3[3]];
+  return [
+    v0 * m0[0] + v1 * m1[0] + v2 * m2[0] + v3 * m3[0],
+    v0 * m0[1] + v1 * m1[1] + v2 * m2[1] + v3 * m3[1],
+    v0 * m0[2] + v1 * m1[2] + v2 * m2[2] + v3 * m3[2],
+    v0 * m0[3] + v1 * m1[3] + v2 * m2[3] + v3 * m3[3]
+  ];
 };
 
 /**
@@ -1714,17 +1858,19 @@ o3djs.math.matrix4.transformVector4 = function(m, v) {
  * @return {!o3djs.math.Vector3} The transformed direction.
  */
 o3djs.math.matrix4.transformDirection = function(m, v) {
-  var v0 = v[0];
-  var v1 = v[1];
-  var v2 = v[2];
-  var m0 = m[0];
-  var m1 = m[1];
-  var m2 = m[2];
-  var m3 = m[3];
+  const v0 = v[0];
+  const v1 = v[1];
+  const v2 = v[2];
+  const m0 = m[0];
+  const m1 = m[1];
+  const m2 = m[2];
+  const m3 = m[3];
 
-  return [v0 * m0[0] + v1 * m1[0] + v2 * m2[0],
-          v0 * m0[1] + v1 * m1[1] + v2 * m2[1],
-          v0 * m0[2] + v1 * m1[2] + v2 * m2[2]];
+  return [
+    v0 * m0[0] + v1 * m1[0] + v2 * m2[0],
+    v0 * m0[1] + v1 * m1[1] + v2 * m2[1],
+    v0 * m0[2] + v1 * m1[2] + v2 * m2[2]
+  ];
 };
 
 /**
@@ -1741,18 +1887,20 @@ o3djs.math.matrix4.transformDirection = function(m, v) {
  * @return {!o3djs.math.Vector3} The transformed normal.
  */
 o3djs.math.matrix4.transformNormal = function(m, v) {
-  var mInverse = o3djs.math.inverse4(m);
-  var v0 = v[0];
-  var v1 = v[1];
-  var v2 = v[2];
-  var mi0 = mInverse[0];
-  var mi1 = mInverse[1];
-  var mi2 = mInverse[2];
-  var mi3 = mInverse[3];
+  const mInverse = o3djs.math.inverse4(m);
+  const v0 = v[0];
+  const v1 = v[1];
+  const v2 = v[2];
+  const mi0 = mInverse[0];
+  const mi1 = mInverse[1];
+  const mi2 = mInverse[2];
+  const mi3 = mInverse[3];
 
-  return [v0 * mi0[0] + v1 * mi0[1] + v2 * mi0[2],
-          v0 * mi1[0] + v1 * mi1[1] + v2 * mi1[2],
-          v0 * mi2[0] + v1 * mi2[1] + v2 * mi2[2]];
+  return [
+    v0 * mi0[0] + v1 * mi0[1] + v2 * mi0[2],
+    v0 * mi1[0] + v1 * mi1[1] + v2 * mi1[2],
+    v0 * mi2[0] + v1 * mi2[1] + v2 * mi2[2]
+  ];
 };
 
 /**
@@ -1760,12 +1908,7 @@ o3djs.math.matrix4.transformNormal = function(m, v) {
  * @return {!o3djs.math.Matrix4} The 4-by-4 identity.
  */
 o3djs.math.matrix4.identity = function() {
-  return [
-    [1, 0, 0, 0],
-    [0, 1, 0, 0],
-    [0, 0, 1, 0],
-    [0, 0, 0, 1]
-  ];
+  return [[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]];
 };
 
 /**
@@ -1774,8 +1917,8 @@ o3djs.math.matrix4.identity = function() {
  * @return {!o3djs.math.Matrix4} m once modified.
  */
 o3djs.math.matrix4.setIdentity = function(m) {
-  for (var i = 0; i < 4; i++) {
-    for (var j = 0; j < 4; j++) {
+  for (let i = 0; i < 4; i++) {
+    for (let j = 0; j < 4; j++) {
       if (i == j) {
         m[i][j] = 1;
       } else {
@@ -1806,8 +1949,8 @@ o3djs.math.matrix4.setIdentity = function(m) {
  * @return {!o3djs.math.Matrix4} The perspective matrix.
  */
 o3djs.math.matrix4.perspective = function(angle, aspect, near, far) {
-  var f = Math.tan(0.5 * (Math.PI - angle));
-  var range = near - far;
+  const f = Math.tan(0.5 * (Math.PI - angle));
+  const range = near - far;
 
   return [
     [f / aspect, 0, 0, 0],
@@ -1833,15 +1976,24 @@ o3djs.math.matrix4.perspective = function(angle, aspect, near, far) {
  * @param {number} far The negative z coordinate of the far plane of the box.
  * @return {!o3djs.math.Matrix4} The orthographic projection matrix.
  */
-o3djs.math.matrix4.orthographic =
-    function(left, right, bottom, top, near, far) {
+o3djs.math.matrix4.orthographic = function(
+  left,
+  right,
+  bottom,
+  top,
+  near,
+  far
+) {
   return [
     [2 / (right - left), 0, 0, 0],
     [0, 2 / (top - bottom), 0, 0],
     [0, 0, 1 / (near - far), 0],
-    [(left + right) / (left - right),
-     (bottom + top) / (bottom - top),
-     near / (near - far), 1]
+    [
+      (left + right) / (left - right),
+      (bottom + top) / (bottom - top),
+      near / (near - far),
+      1
+    ]
   ];
 };
 
@@ -1863,14 +2015,15 @@ o3djs.math.matrix4.orthographic =
  * @return {!o3djs.math.Matrix4} The perspective projection matrix.
  */
 o3djs.math.matrix4.frustum = function(left, right, bottom, top, near, far) {
-  var dx = (right - left);
-  var dy = (top - bottom);
-  var dz = (near - far);
+  const dx = right - left;
+  const dy = top - bottom;
+  const dz = near - far;
   return [
     [2 * near / dx, 0, 0, 0],
     [0, 2 * near / dy, 0, 0],
     [(left + right) / dx, (top + bottom) / dy, far / dz, -1],
-    [0, 0, near * far / dz, 0]];
+    [0, 0, near * far / dz, 0]
+  ];
 };
 
 /**
@@ -1889,11 +2042,11 @@ o3djs.math.matrix4.frustum = function(left, right, bottom, top, near, far) {
  * @return {!o3djs.math.Matrix4} The look-at matrix.
  */
 o3djs.math.matrix4.lookAt = function(eye, target, up) {
-  var vz = o3djs.math.normalize(
-      o3djs.math.subVector(eye, target).slice(0, 3)).concat(0);
-  var vx = o3djs.math.normalize(
-      o3djs.math.cross(up, vz)).concat(0);
-  var vy = o3djs.math.cross(vz, vx).concat(0);
+  const vz = o3djs.math
+    .normalize(o3djs.math.subVector(eye, target).slice(0, 3))
+    .concat(0);
+  const vx = o3djs.math.normalize(o3djs.math.cross(up, vz)).concat(0);
+  const vy = o3djs.math.cross(vz, vx).concat(0);
 
   return o3djs.math.inverse([vx, vy, vz, eye.concat(1)]);
 };
@@ -1909,62 +2062,72 @@ o3djs.math.matrix4.lookAt = function(eye, target, up) {
  * @return {!o3djs.math.Matrix4} the composition of a and b, b first then a.
  */
 o3djs.math.matrix4.composition = function(a, b) {
-  var a0 = a[0];
-  var a1 = a[1];
-  var a2 = a[2];
-  var a3 = a[3];
-  var b0 = b[0];
-  var b1 = b[1];
-  var b2 = b[2];
-  var b3 = b[3];
-  var a00 = a0[0];
-  var a01 = a0[1];
-  var a02 = a0[2];
-  var a03 = a0[3];
-  var a10 = a1[0];
-  var a11 = a1[1];
-  var a12 = a1[2];
-  var a13 = a1[3];
-  var a20 = a2[0];
-  var a21 = a2[1];
-  var a22 = a2[2];
-  var a23 = a2[3];
-  var a30 = a3[0];
-  var a31 = a3[1];
-  var a32 = a3[2];
-  var a33 = a3[3];
-  var b00 = b0[0];
-  var b01 = b0[1];
-  var b02 = b0[2];
-  var b03 = b0[3];
-  var b10 = b1[0];
-  var b11 = b1[1];
-  var b12 = b1[2];
-  var b13 = b1[3];
-  var b20 = b2[0];
-  var b21 = b2[1];
-  var b22 = b2[2];
-  var b23 = b2[3];
-  var b30 = b3[0];
-  var b31 = b3[1];
-  var b32 = b3[2];
-  var b33 = b3[3];
-  return [[a00 * b00 + a10 * b01 + a20 * b02 + a30 * b03,
-           a01 * b00 + a11 * b01 + a21 * b02 + a31 * b03,
-           a02 * b00 + a12 * b01 + a22 * b02 + a32 * b03,
-           a03 * b00 + a13 * b01 + a23 * b02 + a33 * b03],
-          [a00 * b10 + a10 * b11 + a20 * b12 + a30 * b13,
-           a01 * b10 + a11 * b11 + a21 * b12 + a31 * b13,
-           a02 * b10 + a12 * b11 + a22 * b12 + a32 * b13,
-           a03 * b10 + a13 * b11 + a23 * b12 + a33 * b13],
-          [a00 * b20 + a10 * b21 + a20 * b22 + a30 * b23,
-           a01 * b20 + a11 * b21 + a21 * b22 + a31 * b23,
-           a02 * b20 + a12 * b21 + a22 * b22 + a32 * b23,
-           a03 * b20 + a13 * b21 + a23 * b22 + a33 * b23],
-          [a00 * b30 + a10 * b31 + a20 * b32 + a30 * b33,
-           a01 * b30 + a11 * b31 + a21 * b32 + a31 * b33,
-           a02 * b30 + a12 * b31 + a22 * b32 + a32 * b33,
-           a03 * b30 + a13 * b31 + a23 * b32 + a33 * b33]];
+  const a0 = a[0];
+  const a1 = a[1];
+  const a2 = a[2];
+  const a3 = a[3];
+  const b0 = b[0];
+  const b1 = b[1];
+  const b2 = b[2];
+  const b3 = b[3];
+  const a00 = a0[0];
+  const a01 = a0[1];
+  const a02 = a0[2];
+  const a03 = a0[3];
+  const a10 = a1[0];
+  const a11 = a1[1];
+  const a12 = a1[2];
+  const a13 = a1[3];
+  const a20 = a2[0];
+  const a21 = a2[1];
+  const a22 = a2[2];
+  const a23 = a2[3];
+  const a30 = a3[0];
+  const a31 = a3[1];
+  const a32 = a3[2];
+  const a33 = a3[3];
+  const b00 = b0[0];
+  const b01 = b0[1];
+  const b02 = b0[2];
+  const b03 = b0[3];
+  const b10 = b1[0];
+  const b11 = b1[1];
+  const b12 = b1[2];
+  const b13 = b1[3];
+  const b20 = b2[0];
+  const b21 = b2[1];
+  const b22 = b2[2];
+  const b23 = b2[3];
+  const b30 = b3[0];
+  const b31 = b3[1];
+  const b32 = b3[2];
+  const b33 = b3[3];
+  return [
+    [
+      a00 * b00 + a10 * b01 + a20 * b02 + a30 * b03,
+      a01 * b00 + a11 * b01 + a21 * b02 + a31 * b03,
+      a02 * b00 + a12 * b01 + a22 * b02 + a32 * b03,
+      a03 * b00 + a13 * b01 + a23 * b02 + a33 * b03
+    ],
+    [
+      a00 * b10 + a10 * b11 + a20 * b12 + a30 * b13,
+      a01 * b10 + a11 * b11 + a21 * b12 + a31 * b13,
+      a02 * b10 + a12 * b11 + a22 * b12 + a32 * b13,
+      a03 * b10 + a13 * b11 + a23 * b12 + a33 * b13
+    ],
+    [
+      a00 * b20 + a10 * b21 + a20 * b22 + a30 * b23,
+      a01 * b20 + a11 * b21 + a21 * b22 + a31 * b23,
+      a02 * b20 + a12 * b21 + a22 * b22 + a32 * b23,
+      a03 * b20 + a13 * b21 + a23 * b22 + a33 * b23
+    ],
+    [
+      a00 * b30 + a10 * b31 + a20 * b32 + a30 * b33,
+      a01 * b30 + a11 * b31 + a21 * b32 + a31 * b33,
+      a02 * b30 + a12 * b31 + a22 * b32 + a32 * b33,
+      a03 * b30 + a13 * b31 + a23 * b32 + a33 * b33
+    ]
+  ];
 };
 
 /**
@@ -1978,62 +2141,78 @@ o3djs.math.matrix4.composition = function(a, b) {
  * @return {!o3djs.math.Matrix4} a once modified.
  */
 o3djs.math.matrix4.compose = function(a, b) {
-  var a0 = a[0];
-  var a1 = a[1];
-  var a2 = a[2];
-  var a3 = a[3];
-  var b0 = b[0];
-  var b1 = b[1];
-  var b2 = b[2];
-  var b3 = b[3];
-  var a00 = a0[0];
-  var a01 = a0[1];
-  var a02 = a0[2];
-  var a03 = a0[3];
-  var a10 = a1[0];
-  var a11 = a1[1];
-  var a12 = a1[2];
-  var a13 = a1[3];
-  var a20 = a2[0];
-  var a21 = a2[1];
-  var a22 = a2[2];
-  var a23 = a2[3];
-  var a30 = a3[0];
-  var a31 = a3[1];
-  var a32 = a3[2];
-  var a33 = a3[3];
-  var b00 = b0[0];
-  var b01 = b0[1];
-  var b02 = b0[2];
-  var b03 = b0[3];
-  var b10 = b1[0];
-  var b11 = b1[1];
-  var b12 = b1[2];
-  var b13 = b1[3];
-  var b20 = b2[0];
-  var b21 = b2[1];
-  var b22 = b2[2];
-  var b23 = b2[3];
-  var b30 = b3[0];
-  var b31 = b3[1];
-  var b32 = b3[2];
-  var b33 = b3[3];
-  a[0].splice(0, 4, a00 * b00 + a10 * b01 + a20 * b02 + a30 * b03,
-                    a01 * b00 + a11 * b01 + a21 * b02 + a31 * b03,
-                    a02 * b00 + a12 * b01 + a22 * b02 + a32 * b03,
-                    a03 * b00 + a13 * b01 + a23 * b02 + a33 * b03);
-  a[1].splice(0, 4, a00 * b10 + a10 * b11 + a20 * b12 + a30 * b13,
-                    a01 * b10 + a11 * b11 + a21 * b12 + a31 * b13,
-                    a02 * b10 + a12 * b11 + a22 * b12 + a32 * b13,
-                    a03 * b10 + a13 * b11 + a23 * b12 + a33 * b13);
-  a[2].splice(0, 4, a00 * b20 + a10 * b21 + a20 * b22 + a30 * b23,
-                    a01 * b20 + a11 * b21 + a21 * b22 + a31 * b23,
-                    a02 * b20 + a12 * b21 + a22 * b22 + a32 * b23,
-                    a03 * b20 + a13 * b21 + a23 * b22 + a33 * b23),
-  a[3].splice(0, 4, a00 * b30 + a10 * b31 + a20 * b32 + a30 * b33,
-                    a01 * b30 + a11 * b31 + a21 * b32 + a31 * b33,
-                    a02 * b30 + a12 * b31 + a22 * b32 + a32 * b33,
-                    a03 * b30 + a13 * b31 + a23 * b32 + a33 * b33);
+  const a0 = a[0];
+  const a1 = a[1];
+  const a2 = a[2];
+  const a3 = a[3];
+  const b0 = b[0];
+  const b1 = b[1];
+  const b2 = b[2];
+  const b3 = b[3];
+  const a00 = a0[0];
+  const a01 = a0[1];
+  const a02 = a0[2];
+  const a03 = a0[3];
+  const a10 = a1[0];
+  const a11 = a1[1];
+  const a12 = a1[2];
+  const a13 = a1[3];
+  const a20 = a2[0];
+  const a21 = a2[1];
+  const a22 = a2[2];
+  const a23 = a2[3];
+  const a30 = a3[0];
+  const a31 = a3[1];
+  const a32 = a3[2];
+  const a33 = a3[3];
+  const b00 = b0[0];
+  const b01 = b0[1];
+  const b02 = b0[2];
+  const b03 = b0[3];
+  const b10 = b1[0];
+  const b11 = b1[1];
+  const b12 = b1[2];
+  const b13 = b1[3];
+  const b20 = b2[0];
+  const b21 = b2[1];
+  const b22 = b2[2];
+  const b23 = b2[3];
+  const b30 = b3[0];
+  const b31 = b3[1];
+  const b32 = b3[2];
+  const b33 = b3[3];
+  a[0].splice(
+    0,
+    4,
+    a00 * b00 + a10 * b01 + a20 * b02 + a30 * b03,
+    a01 * b00 + a11 * b01 + a21 * b02 + a31 * b03,
+    a02 * b00 + a12 * b01 + a22 * b02 + a32 * b03,
+    a03 * b00 + a13 * b01 + a23 * b02 + a33 * b03
+  );
+  a[1].splice(
+    0,
+    4,
+    a00 * b10 + a10 * b11 + a20 * b12 + a30 * b13,
+    a01 * b10 + a11 * b11 + a21 * b12 + a31 * b13,
+    a02 * b10 + a12 * b11 + a22 * b12 + a32 * b13,
+    a03 * b10 + a13 * b11 + a23 * b12 + a33 * b13
+  );
+  a[2].splice(
+    0,
+    4,
+    a00 * b20 + a10 * b21 + a20 * b22 + a30 * b23,
+    a01 * b20 + a11 * b21 + a21 * b22 + a31 * b23,
+    a02 * b20 + a12 * b21 + a22 * b22 + a32 * b23,
+    a03 * b20 + a13 * b21 + a23 * b22 + a33 * b23
+  ),
+    a[3].splice(
+      0,
+      4,
+      a00 * b30 + a10 * b31 + a20 * b32 + a30 * b33,
+      a01 * b30 + a11 * b31 + a21 * b32 + a31 * b33,
+      a02 * b30 + a12 * b31 + a22 * b32 + a32 * b33,
+      a03 * b30 + a13 * b31 + a23 * b32 + a33 * b33
+    );
   return a;
 };
 
@@ -2044,12 +2223,7 @@ o3djs.math.matrix4.compose = function(a, b) {
  * @return {!o3djs.math.Matrix4} The translation matrix.
  */
 o3djs.math.matrix4.translation = function(v) {
-  return [
-    [1, 0, 0, 0],
-    [0, 1, 0, 0],
-    [0, 0, 1, 0],
-    [v[0], v[1], v[2], 1]
-  ];
+  return [[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [v[0], v[1], v[2], 1]];
 };
 
 /**
@@ -2060,34 +2234,38 @@ o3djs.math.matrix4.translation = function(v) {
  * @return {!o3djs.math.Matrix4} m once modified.
  */
 o3djs.math.matrix4.translate = function(m, v) {
-  var v0 = v[0];
-  var v1 = v[1];
-  var v2 = v[2];
-  var m0 = m[0];
-  var m1 = m[1];
-  var m2 = m[2];
-  var m3 = m[3];
-  var m00 = m0[0];
-  var m01 = m0[1];
-  var m02 = m0[2];
-  var m03 = m0[3];
-  var m10 = m1[0];
-  var m11 = m1[1];
-  var m12 = m1[2];
-  var m13 = m1[3];
-  var m20 = m2[0];
-  var m21 = m2[1];
-  var m22 = m2[2];
-  var m23 = m2[3];
-  var m30 = m3[0];
-  var m31 = m3[1];
-  var m32 = m3[2];
-  var m33 = m3[3];
+  const v0 = v[0];
+  const v1 = v[1];
+  const v2 = v[2];
+  const m0 = m[0];
+  const m1 = m[1];
+  const m2 = m[2];
+  const m3 = m[3];
+  const m00 = m0[0];
+  const m01 = m0[1];
+  const m02 = m0[2];
+  const m03 = m0[3];
+  const m10 = m1[0];
+  const m11 = m1[1];
+  const m12 = m1[2];
+  const m13 = m1[3];
+  const m20 = m2[0];
+  const m21 = m2[1];
+  const m22 = m2[2];
+  const m23 = m2[3];
+  const m30 = m3[0];
+  const m31 = m3[1];
+  const m32 = m3[2];
+  const m33 = m3[3];
 
-  m3.splice(0, 4, m00 * v0 + m10 * v1 + m20 * v2 + m30,
-                  m01 * v0 + m11 * v1 + m21 * v2 + m31,
-                  m02 * v0 + m12 * v1 + m22 * v2 + m32,
-                  m03 * v0 + m13 * v1 + m23 * v2 + m33);
+  m3.splice(
+    0,
+    4,
+    m00 * v0 + m10 * v1 + m20 * v2 + m30,
+    m01 * v0 + m11 * v1 + m21 * v2 + m31,
+    m02 * v0 + m12 * v1 + m22 * v2 + m32,
+    m03 * v0 + m13 * v1 + m23 * v2 + m33
+  );
 
   return m;
 };
@@ -2101,12 +2279,7 @@ o3djs.math.matrix4.translate = function(m, v) {
  * @return {!o3djs.math.Matrix4} The scaling matrix.
  */
 o3djs.math.matrix4.scaling = function(v) {
-  return [
-    [v[0], 0, 0, 0],
-    [0, v[1], 0, 0],
-    [0, 0, v[2], 0],
-    [0, 0, 0, 1]
-  ];
+  return [[v[0], 0, 0, 0], [0, v[1], 0, 0], [0, 0, v[2], 0], [0, 0, 0, 1]];
 };
 
 /**
@@ -2119,14 +2292,14 @@ o3djs.math.matrix4.scaling = function(v) {
  * @return {!o3djs.math.Matrix4} m once modified.
  */
 o3djs.math.matrix4.scale = function(m, v) {
-  var v0 = v[0];
-  var v1 = v[1];
-  var v2 = v[2];
+  const v0 = v[0];
+  const v1 = v[1];
+  const v2 = v[2];
 
-  var m0 = m[0];
-  var m1 = m[1];
-  var m2 = m[2];
-  var m3 = m[3];
+  const m0 = m[0];
+  const m1 = m[1];
+  const m2 = m[2];
+  const m3 = m[3];
 
   m0.splice(0, 4, v0 * m0[0], v0 * m0[1], v0 * m0[2], v0 * m0[3]);
   m1.splice(0, 4, v1 * m1[0], v1 * m1[1], v1 * m1[2], v1 * m1[3]);
@@ -2141,15 +2314,10 @@ o3djs.math.matrix4.scale = function(m, v) {
  * @return {!o3djs.math.Matrix4} The rotation matrix.
  */
 o3djs.math.matrix4.rotationX = function(angle) {
-  var c = Math.cos(angle);
-  var s = Math.sin(angle);
+  const c = Math.cos(angle);
+  const s = Math.sin(angle);
 
-  return [
-    [1, 0, 0, 0],
-    [0, c, s, 0],
-    [0, -s, c, 0],
-    [0, 0, 0, 1]
-  ];
+  return [[1, 0, 0, 0], [0, c, s, 0], [0, -s, c, 0], [0, 0, 0, 1]];
 };
 
 /**
@@ -2160,29 +2328,37 @@ o3djs.math.matrix4.rotationX = function(angle) {
  * @return {!o3djs.math.Matrix4} m once modified.
  */
 o3djs.math.matrix4.rotateX = function(m, angle) {
-  var m0 = m[0];
-  var m1 = m[1];
-  var m2 = m[2];
-  var m3 = m[3];
-  var m10 = m1[0];
-  var m11 = m1[1];
-  var m12 = m1[2];
-  var m13 = m1[3];
-  var m20 = m2[0];
-  var m21 = m2[1];
-  var m22 = m2[2];
-  var m23 = m2[3];
-  var c = Math.cos(angle);
-  var s = Math.sin(angle);
+  const m0 = m[0];
+  const m1 = m[1];
+  const m2 = m[2];
+  const m3 = m[3];
+  const m10 = m1[0];
+  const m11 = m1[1];
+  const m12 = m1[2];
+  const m13 = m1[3];
+  const m20 = m2[0];
+  const m21 = m2[1];
+  const m22 = m2[2];
+  const m23 = m2[3];
+  const c = Math.cos(angle);
+  const s = Math.sin(angle);
 
-  m1.splice(0, 4, c * m10 + s * m20,
-                  c * m11 + s * m21,
-                  c * m12 + s * m22,
-                  c * m13 + s * m23);
-  m2.splice(0, 4, c * m20 - s * m10,
-                  c * m21 - s * m11,
-                  c * m22 - s * m12,
-                  c * m23 - s * m13);
+  m1.splice(
+    0,
+    4,
+    c * m10 + s * m20,
+    c * m11 + s * m21,
+    c * m12 + s * m22,
+    c * m13 + s * m23
+  );
+  m2.splice(
+    0,
+    4,
+    c * m20 - s * m10,
+    c * m21 - s * m11,
+    c * m22 - s * m12,
+    c * m23 - s * m13
+  );
 
   return m;
 };
@@ -2193,15 +2369,10 @@ o3djs.math.matrix4.rotateX = function(m, angle) {
  * @return {!o3djs.math.Matrix4} The rotation matrix.
  */
 o3djs.math.matrix4.rotationY = function(angle) {
-  var c = Math.cos(angle);
-  var s = Math.sin(angle);
+  const c = Math.cos(angle);
+  const s = Math.sin(angle);
 
-  return [
-    [c, 0, -s, 0],
-    [0, 1, 0, 0],
-    [s, 0, c, 0],
-    [0, 0, 0, 1]
-  ];
+  return [[c, 0, -s, 0], [0, 1, 0, 0], [s, 0, c, 0], [0, 0, 0, 1]];
 };
 
 /**
@@ -2212,29 +2383,37 @@ o3djs.math.matrix4.rotationY = function(angle) {
  * @return {!o3djs.math.Matrix4} m once modified.
  */
 o3djs.math.matrix4.rotateY = function(m, angle) {
-  var m0 = m[0];
-  var m1 = m[1];
-  var m2 = m[2];
-  var m3 = m[3];
-  var m00 = m0[0];
-  var m01 = m0[1];
-  var m02 = m0[2];
-  var m03 = m0[3];
-  var m20 = m2[0];
-  var m21 = m2[1];
-  var m22 = m2[2];
-  var m23 = m2[3];
-  var c = Math.cos(angle);
-  var s = Math.sin(angle);
+  const m0 = m[0];
+  const m1 = m[1];
+  const m2 = m[2];
+  const m3 = m[3];
+  const m00 = m0[0];
+  const m01 = m0[1];
+  const m02 = m0[2];
+  const m03 = m0[3];
+  const m20 = m2[0];
+  const m21 = m2[1];
+  const m22 = m2[2];
+  const m23 = m2[3];
+  const c = Math.cos(angle);
+  const s = Math.sin(angle);
 
-  m0.splice(0, 4, c * m00 - s * m20,
-                  c * m01 - s * m21,
-                  c * m02 - s * m22,
-                  c * m03 - s * m23);
-  m2.splice(0, 4, c * m20 + s * m00,
-                  c * m21 + s * m01,
-                  c * m22 + s * m02,
-                  c * m23 + s * m03);
+  m0.splice(
+    0,
+    4,
+    c * m00 - s * m20,
+    c * m01 - s * m21,
+    c * m02 - s * m22,
+    c * m03 - s * m23
+  );
+  m2.splice(
+    0,
+    4,
+    c * m20 + s * m00,
+    c * m21 + s * m01,
+    c * m22 + s * m02,
+    c * m23 + s * m03
+  );
 
   return m;
 };
@@ -2245,15 +2424,10 @@ o3djs.math.matrix4.rotateY = function(m, angle) {
  * @return {!o3djs.math.Matrix4} The rotation matrix.
  */
 o3djs.math.matrix4.rotationZ = function(angle) {
-  var c = Math.cos(angle);
-  var s = Math.sin(angle);
+  const c = Math.cos(angle);
+  const s = Math.sin(angle);
 
-  return [
-    [c, s, 0, 0],
-    [-s, c, 0, 0],
-    [0, 0, 1, 0],
-    [0, 0, 0, 1]
-  ];
+  return [[c, s, 0, 0], [-s, c, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]];
 };
 
 /**
@@ -2264,29 +2438,37 @@ o3djs.math.matrix4.rotationZ = function(angle) {
  * @return {!o3djs.math.Matrix4} m once modified.
  */
 o3djs.math.matrix4.rotateZ = function(m, angle) {
-  var m0 = m[0];
-  var m1 = m[1];
-  var m2 = m[2];
-  var m3 = m[3];
-  var m00 = m0[0];
-  var m01 = m0[1];
-  var m02 = m0[2];
-  var m03 = m0[3];
-  var m10 = m1[0];
-  var m11 = m1[1];
-  var m12 = m1[2];
-  var m13 = m1[3];
-  var c = Math.cos(angle);
-  var s = Math.sin(angle);
+  const m0 = m[0];
+  const m1 = m[1];
+  const m2 = m[2];
+  const m3 = m[3];
+  const m00 = m0[0];
+  const m01 = m0[1];
+  const m02 = m0[2];
+  const m03 = m0[3];
+  const m10 = m1[0];
+  const m11 = m1[1];
+  const m12 = m1[2];
+  const m13 = m1[3];
+  const c = Math.cos(angle);
+  const s = Math.sin(angle);
 
-  m0.splice(0, 4, c * m00 + s * m10,
-                  c * m01 + s * m11,
-                  c * m02 + s * m12,
-                  c * m03 + s * m13);
-  m1.splice(0, 4, c * m10 - s * m00,
-                  c * m11 - s * m01,
-                  c * m12 - s * m02,
-                  c * m13 - s * m03);
+  m0.splice(
+    0,
+    4,
+    c * m00 + s * m10,
+    c * m01 + s * m11,
+    c * m02 + s * m12,
+    c * m03 + s * m13
+  );
+  m1.splice(
+    0,
+    4,
+    c * m10 - s * m00,
+    c * m11 - s * m01,
+    c * m12 - s * m02,
+    c * m13 - s * m03
+  );
 
   return m;
 };
@@ -2300,26 +2482,30 @@ o3djs.math.matrix4.rotateZ = function(m, angle) {
  * @return {!o3djs.math.Matrix4} The rotation matrix.
  */
 o3djs.math.matrix4.rotationZYX = function(v) {
-  var sinx = Math.sin(v[0]);
-  var cosx = Math.cos(v[0]);
-  var siny = Math.sin(v[1]);
-  var cosy = Math.cos(v[1]);
-  var sinz = Math.sin(v[2]);
-  var cosz = Math.cos(v[2]);
+  const sinx = Math.sin(v[0]);
+  const cosx = Math.cos(v[0]);
+  const siny = Math.sin(v[1]);
+  const cosy = Math.cos(v[1]);
+  const sinz = Math.sin(v[2]);
+  const cosz = Math.cos(v[2]);
 
-  var coszsiny = cosz * siny;
-  var sinzsiny = sinz * siny;
+  const coszsiny = cosz * siny;
+  const sinzsiny = sinz * siny;
 
   return [
     [cosz * cosy, sinz * cosy, -siny, 0],
-    [coszsiny * sinx - sinz * cosx,
-     sinzsiny * sinx + cosz * cosx,
-     cosy * sinx,
-     0],
-    [coszsiny * cosx + sinz * sinx,
-     sinzsiny * cosx - cosz * sinx,
-     cosy * cosx,
-     0],
+    [
+      coszsiny * sinx - sinz * cosx,
+      sinzsiny * sinx + cosz * cosx,
+      cosy * sinx,
+      0
+    ],
+    [
+      coszsiny * cosx + sinz * sinx,
+      sinzsiny * cosx - cosz * sinx,
+      cosy * cosx,
+      0
+    ],
     [0, 0, 0, 1]
   ];
 };
@@ -2333,65 +2519,74 @@ o3djs.math.matrix4.rotationZYX = function(v) {
  * @return {!o3djs.math.Matrix4} m once modified.
  */
 o3djs.math.matrix4.rotateZYX = function(m, v) {
-  var sinX = Math.sin(v[0]);
-  var cosX = Math.cos(v[0]);
-  var sinY = Math.sin(v[1]);
-  var cosY = Math.cos(v[1]);
-  var sinZ = Math.sin(v[2]);
-  var cosZ = Math.cos(v[2]);
+  const sinX = Math.sin(v[0]);
+  const cosX = Math.cos(v[0]);
+  const sinY = Math.sin(v[1]);
+  const cosY = Math.cos(v[1]);
+  const sinZ = Math.sin(v[2]);
+  const cosZ = Math.cos(v[2]);
 
-  var cosZSinY = cosZ * sinY;
-  var sinZSinY = sinZ * sinY;
+  const cosZSinY = cosZ * sinY;
+  const sinZSinY = sinZ * sinY;
 
-  var r00 = cosZ * cosY;
-  var r01 = sinZ * cosY;
-  var r02 = -sinY;
-  var r10 = cosZSinY * sinX - sinZ * cosX;
-  var r11 = sinZSinY * sinX + cosZ * cosX;
-  var r12 = cosY * sinX;
-  var r20 = cosZSinY * cosX + sinZ * sinX;
-  var r21 = sinZSinY * cosX - cosZ * sinX;
-  var r22 = cosY * cosX;
+  const r00 = cosZ * cosY;
+  const r01 = sinZ * cosY;
+  const r02 = -sinY;
+  const r10 = cosZSinY * sinX - sinZ * cosX;
+  const r11 = sinZSinY * sinX + cosZ * cosX;
+  const r12 = cosY * sinX;
+  const r20 = cosZSinY * cosX + sinZ * sinX;
+  const r21 = sinZSinY * cosX - cosZ * sinX;
+  const r22 = cosY * cosX;
 
-  var m0 = m[0];
-  var m1 = m[1];
-  var m2 = m[2];
-  var m3 = m[3];
+  const m0 = m[0];
+  const m1 = m[1];
+  const m2 = m[2];
+  const m3 = m[3];
 
-  var m00 = m0[0];
-  var m01 = m0[1];
-  var m02 = m0[2];
-  var m03 = m0[3];
-  var m10 = m1[0];
-  var m11 = m1[1];
-  var m12 = m1[2];
-  var m13 = m1[3];
-  var m20 = m2[0];
-  var m21 = m2[1];
-  var m22 = m2[2];
-  var m23 = m2[3];
-  var m30 = m3[0];
-  var m31 = m3[1];
-  var m32 = m3[2];
-  var m33 = m3[3];
+  const m00 = m0[0];
+  const m01 = m0[1];
+  const m02 = m0[2];
+  const m03 = m0[3];
+  const m10 = m1[0];
+  const m11 = m1[1];
+  const m12 = m1[2];
+  const m13 = m1[3];
+  const m20 = m2[0];
+  const m21 = m2[1];
+  const m22 = m2[2];
+  const m23 = m2[3];
+  const m30 = m3[0];
+  const m31 = m3[1];
+  const m32 = m3[2];
+  const m33 = m3[3];
 
-  m0.splice(0, 4,
-      r00 * m00 + r01 * m10 + r02 * m20,
-      r00 * m01 + r01 * m11 + r02 * m21,
-      r00 * m02 + r01 * m12 + r02 * m22,
-      r00 * m03 + r01 * m13 + r02 * m23);
+  m0.splice(
+    0,
+    4,
+    r00 * m00 + r01 * m10 + r02 * m20,
+    r00 * m01 + r01 * m11 + r02 * m21,
+    r00 * m02 + r01 * m12 + r02 * m22,
+    r00 * m03 + r01 * m13 + r02 * m23
+  );
 
-  m1.splice(0, 4,
-      r10 * m00 + r11 * m10 + r12 * m20,
-      r10 * m01 + r11 * m11 + r12 * m21,
-      r10 * m02 + r11 * m12 + r12 * m22,
-      r10 * m03 + r11 * m13 + r12 * m23);
+  m1.splice(
+    0,
+    4,
+    r10 * m00 + r11 * m10 + r12 * m20,
+    r10 * m01 + r11 * m11 + r12 * m21,
+    r10 * m02 + r11 * m12 + r12 * m22,
+    r10 * m03 + r11 * m13 + r12 * m23
+  );
 
-  m2.splice(0, 4,
-      r20 * m00 + r21 * m10 + r22 * m20,
-      r20 * m01 + r21 * m11 + r22 * m21,
-      r20 * m02 + r21 * m12 + r22 * m22,
-      r20 * m03 + r21 * m13 + r22 * m23);
+  m2.splice(
+    0,
+    4,
+    r20 * m00 + r21 * m10 + r22 * m20,
+    r20 * m01 + r21 * m11 + r22 * m21,
+    r20 * m02 + r21 * m12 + r22 * m22,
+    r20 * m03 + r21 * m13 + r22 * m23
+  );
 
   return m;
 };
@@ -2406,33 +2601,39 @@ o3djs.math.matrix4.rotateZYX = function(m, v) {
  *     around the axis.
  */
 o3djs.math.matrix4.axisRotation = function(axis, angle) {
-  var x = axis[0];
-  var y = axis[1];
-  var z = axis[2];
-  var n = Math.sqrt(x * x + y * y + z * z);
+  let x = axis[0];
+  let y = axis[1];
+  let z = axis[2];
+  const n = Math.sqrt(x * x + y * y + z * z);
   x /= n;
   y /= n;
   z /= n;
-  var xx = x * x;
-  var yy = y * y;
-  var zz = z * z;
-  var c = Math.cos(angle);
-  var s = Math.sin(angle);
-  var oneMinusCosine = 1 - c;
+  const xx = x * x;
+  const yy = y * y;
+  const zz = z * z;
+  const c = Math.cos(angle);
+  const s = Math.sin(angle);
+  const oneMinusCosine = 1 - c;
 
   return [
-    [xx + (1 - xx) * c,
-     x * y * oneMinusCosine + z * s,
-     x * z * oneMinusCosine - y * s,
-     0],
-    [x * y * oneMinusCosine - z * s,
-     yy + (1 - yy) * c,
-     y * z * oneMinusCosine + x * s,
-     0],
-    [x * z * oneMinusCosine + y * s,
-     y * z * oneMinusCosine - x * s,
-     zz + (1 - zz) * c,
-     0],
+    [
+      xx + (1 - xx) * c,
+      x * y * oneMinusCosine + z * s,
+      x * z * oneMinusCosine - y * s,
+      0
+    ],
+    [
+      x * y * oneMinusCosine - z * s,
+      yy + (1 - yy) * c,
+      y * z * oneMinusCosine + x * s,
+      0
+    ],
+    [
+      x * z * oneMinusCosine + y * s,
+      y * z * oneMinusCosine - x * s,
+      zz + (1 - zz) * c,
+      0
+    ],
     [0, 0, 0, 1]
   ];
 };
@@ -2447,69 +2648,78 @@ o3djs.math.matrix4.axisRotation = function(axis, angle) {
  * @return {!o3djs.math.Matrix4} m once modified.
  */
 o3djs.math.matrix4.axisRotate = function(m, axis, angle) {
-  var x = axis[0];
-  var y = axis[1];
-  var z = axis[2];
-  var n = Math.sqrt(x * x + y * y + z * z);
+  let x = axis[0];
+  let y = axis[1];
+  let z = axis[2];
+  const n = Math.sqrt(x * x + y * y + z * z);
   x /= n;
   y /= n;
   z /= n;
-  var xx = x * x;
-  var yy = y * y;
-  var zz = z * z;
-  var c = Math.cos(angle);
-  var s = Math.sin(angle);
-  var oneMinusCosine = 1 - c;
+  const xx = x * x;
+  const yy = y * y;
+  const zz = z * z;
+  const c = Math.cos(angle);
+  const s = Math.sin(angle);
+  const oneMinusCosine = 1 - c;
 
-  var r00 = xx + (1 - xx) * c;
-  var r01 = x * y * oneMinusCosine + z * s;
-  var r02 = x * z * oneMinusCosine - y * s;
-  var r10 = x * y * oneMinusCosine - z * s;
-  var r11 = yy + (1 - yy) * c;
-  var r12 = y * z * oneMinusCosine + x * s;
-  var r20 = x * z * oneMinusCosine + y * s;
-  var r21 = y * z * oneMinusCosine - x * s;
-  var r22 = zz + (1 - zz) * c;
+  const r00 = xx + (1 - xx) * c;
+  const r01 = x * y * oneMinusCosine + z * s;
+  const r02 = x * z * oneMinusCosine - y * s;
+  const r10 = x * y * oneMinusCosine - z * s;
+  const r11 = yy + (1 - yy) * c;
+  const r12 = y * z * oneMinusCosine + x * s;
+  const r20 = x * z * oneMinusCosine + y * s;
+  const r21 = y * z * oneMinusCosine - x * s;
+  const r22 = zz + (1 - zz) * c;
 
-  var m0 = m[0];
-  var m1 = m[1];
-  var m2 = m[2];
-  var m3 = m[3];
+  const m0 = m[0];
+  const m1 = m[1];
+  const m2 = m[2];
+  const m3 = m[3];
 
-  var m00 = m0[0];
-  var m01 = m0[1];
-  var m02 = m0[2];
-  var m03 = m0[3];
-  var m10 = m1[0];
-  var m11 = m1[1];
-  var m12 = m1[2];
-  var m13 = m1[3];
-  var m20 = m2[0];
-  var m21 = m2[1];
-  var m22 = m2[2];
-  var m23 = m2[3];
-  var m30 = m3[0];
-  var m31 = m3[1];
-  var m32 = m3[2];
-  var m33 = m3[3];
+  const m00 = m0[0];
+  const m01 = m0[1];
+  const m02 = m0[2];
+  const m03 = m0[3];
+  const m10 = m1[0];
+  const m11 = m1[1];
+  const m12 = m1[2];
+  const m13 = m1[3];
+  const m20 = m2[0];
+  const m21 = m2[1];
+  const m22 = m2[2];
+  const m23 = m2[3];
+  const m30 = m3[0];
+  const m31 = m3[1];
+  const m32 = m3[2];
+  const m33 = m3[3];
 
-  m0.splice(0, 4,
-      r00 * m00 + r01 * m10 + r02 * m20,
-      r00 * m01 + r01 * m11 + r02 * m21,
-      r00 * m02 + r01 * m12 + r02 * m22,
-      r00 * m03 + r01 * m13 + r02 * m23);
+  m0.splice(
+    0,
+    4,
+    r00 * m00 + r01 * m10 + r02 * m20,
+    r00 * m01 + r01 * m11 + r02 * m21,
+    r00 * m02 + r01 * m12 + r02 * m22,
+    r00 * m03 + r01 * m13 + r02 * m23
+  );
 
-  m1.splice(0, 4,
-      r10 * m00 + r11 * m10 + r12 * m20,
-      r10 * m01 + r11 * m11 + r12 * m21,
-      r10 * m02 + r11 * m12 + r12 * m22,
-      r10 * m03 + r11 * m13 + r12 * m23);
+  m1.splice(
+    0,
+    4,
+    r10 * m00 + r11 * m10 + r12 * m20,
+    r10 * m01 + r11 * m11 + r12 * m21,
+    r10 * m02 + r11 * m12 + r12 * m22,
+    r10 * m03 + r11 * m13 + r12 * m23
+  );
 
-  m2.splice(0, 4,
-      r20 * m00 + r21 * m10 + r22 * m20,
-      r20 * m01 + r21 * m11 + r22 * m21,
-      r20 * m02 + r21 * m12 + r22 * m22,
-      r20 * m03 + r21 * m13 + r22 * m23);
+  m2.splice(
+    0,
+    4,
+    r20 * m00 + r21 * m10 + r22 * m20,
+    r20 * m01 + r21 * m11 + r22 * m21,
+    r20 * m02 + r21 * m12 + r22 * m22,
+    r20 * m03 + r21 * m13 + r22 * m23
+  );
 
   return m;
 };
@@ -2521,7 +2731,7 @@ o3djs.math.matrix4.axisRotate = function(m, axis, angle) {
  * convention.
  */
 o3djs.math.installRowMajorFunctions = function() {
-  for (var f in o3djs.math.rowMajor) {
+  for (const f in o3djs.math.rowMajor) {
     o3djs.math[f] = o3djs.math.rowMajor[f];
   }
 };
@@ -2533,7 +2743,7 @@ o3djs.math.installRowMajorFunctions = function() {
  * major convention.
  */
 o3djs.math.installColumnMajorFunctions = function() {
-  for (var f in o3djs.math.columnMajor) {
+  for (const f in o3djs.math.columnMajor) {
     o3djs.math[f] = o3djs.math.columnMajor[f];
   }
 };
@@ -2544,7 +2754,7 @@ o3djs.math.installColumnMajorFunctions = function() {
  * o3djs.math.errorCheck).
  */
 o3djs.math.installErrorCheckFunctions = function() {
-  for (var f in o3djs.math.errorCheck) {
+  for (const f in o3djs.math.errorCheck) {
     o3djs.math[f] = o3djs.math.errorCheck[f];
   }
 };
@@ -2555,10 +2765,10 @@ o3djs.math.installErrorCheckFunctions = function() {
  * o3djs.math.errorCheckFree).
  */
 o3djs.math.installErrorCheckFreeFunctions = function() {
-  for (var f in o3djs.math.errorCheckFree) {
+  for (const f in o3djs.math.errorCheckFree) {
     o3djs.math[f] = o3djs.math.errorCheckFree[f];
   }
-}
+};
 
 // By default, install the row-major functions.
 o3djs.math.installRowMajorFunctions();
