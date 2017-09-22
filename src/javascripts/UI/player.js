@@ -1,25 +1,7 @@
-/** ******************************************************
-Copyright 2016 Google Inc. All Rights Reserved.
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-******************************************************** */
-
 const Util = require('../util/util.js');
 
 function Player() {
-  // Create an audio graph.
-  window.AudioContext = window.AudioContext || window.webkitAudioContext;
-  context = new AudioContext();
+  const context = new AudioContext();
 
   const analyser = context.createAnalyser();
   // analyser.fftSize = 2048 * 2 * 2
@@ -52,14 +34,14 @@ function Player() {
   this.buffers = {};
 
   // Connect an empty source node to the mix.
-  Util.loadTrackSrc(this.context, 'bin/snd/empty.mp3', buffer => {
+  Util.loadTrackSrc(this.context, 'bin/snd/empty.mp3', (buffer) => {
     const source = this.createSource_(buffer, true);
     source.loop = true;
     source.start(0);
   });
 }
 
-Player.prototype.playSrc = function(src) {
+Player.prototype.playSrc = function (src) {
   // Stop all of the mic stuff.
   this.filterGain.gain.value = 1;
   if (this.input) {
@@ -78,7 +60,7 @@ Player.prototype.playSrc = function(src) {
   }
 
   $('#loadingSound').fadeIn(100);
-  Util.loadTrackSrc(this.context, src, buffer => {
+  Util.loadTrackSrc(this.context, src, (buffer) => {
     this.buffers[src] = buffer;
     this.playHelper_(src);
     $('#loadingSound')
@@ -87,7 +69,7 @@ Player.prototype.playSrc = function(src) {
   });
 };
 
-Player.prototype.playHelper_ = function(src) {
+Player.prototype.playHelper_ = function (src) {
   const buffer = this.buffers[src];
   this.source = this.createSource_(buffer, true);
   this.source.start(0);
@@ -99,7 +81,7 @@ Player.prototype.playHelper_ = function(src) {
   }
 };
 
-Player.prototype.live = function() {
+Player.prototype.live = function () {
   if (window.isIOS) {
     window.parent.postMessage('error2', '*');
     console.log('cant use mic on ios');
@@ -118,28 +100,28 @@ Player.prototype.live = function() {
     navigator.getUserMedia(
       { audio: true },
       this.onStream_.bind(this),
-      this.onStreamError_.bind(this)
+      this.onStreamError_.bind(this),
     );
     this.filterGain.gain.value = 0;
   }
 };
 
-Player.prototype.onStream_ = function(stream) {
+Player.prototype.onStream_ = function (stream) {
   const input = this.context.createMediaStreamSource(stream);
   input.connect(this.mix);
   this.input = input;
   this.stream = stream;
 };
 
-Player.prototype.onStreamError_ = function(e) {
+Player.prototype.onStreamError_ = function (e) {
   // TODO: Error handling.
 };
 
-Player.prototype.setLoop = function(loop) {
+Player.prototype.setLoop = function (loop) {
   this.loop = loop;
 };
 
-Player.prototype.createSource_ = function(buffer, loop) {
+Player.prototype.createSource_ = function (buffer, loop) {
   const source = this.context.createBufferSource();
   source.buffer = buffer;
   source.loop = loop;
@@ -147,11 +129,11 @@ Player.prototype.createSource_ = function(buffer, loop) {
   return source;
 };
 
-Player.prototype.setMicrophoneInput = function() {
+Player.prototype.setMicrophoneInput = function () {
   // TODO: Implement me!
 };
 
-Player.prototype.stop = function() {
+Player.prototype.stop = function () {
   if (this.source) {
     this.source.stop(0);
     this.source = null;
@@ -164,11 +146,11 @@ Player.prototype.stop = function() {
   }
 };
 
-Player.prototype.getAnalyserNode = function() {
+Player.prototype.getAnalyserNode = function () {
   return this.analyser;
 };
 
-Player.prototype.setBandpassFrequency = function(freq) {
+Player.prototype.setBandpassFrequency = function (freq) {
   if (freq == null) {
     console.log('Removing bandpass filter');
     // Remove the effect of the bandpass filter completely, connecting the mix to the analyser directly.
@@ -185,7 +167,7 @@ Player.prototype.setBandpassFrequency = function(freq) {
   }
 };
 
-Player.prototype.playTone = function(freq) {
+Player.prototype.playTone = function (freq) {
   if (!this.osc) {
     this.osc = this.context.createOscillator();
     this.osc.connect(this.mix);
@@ -196,7 +178,7 @@ Player.prototype.playTone = function(freq) {
   this.filterGain.gain.value = 0.2;
 };
 
-Player.prototype.stopTone = function() {
+Player.prototype.stopTone = function () {
   this.osc.stop(0);
   this.osc = null;
 };

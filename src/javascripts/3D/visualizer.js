@@ -1,21 +1,5 @@
-/** ******************************************************
-Copyright 2016 Google Inc. All Rights Reserved.
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-******************************************************** */
-
 const Matrix4x4 = require('./matrix4x4');
-const CameraController = require('./cameraController');
+const CameraController = require('./CameraController');
 
 const ANALYSISTYPE_FREQUENCY = 0;
 const ANALYSISTYPE_SONOGRAM = 1;
@@ -28,7 +12,7 @@ let view = 0;
 let projection = 0;
 
 function createGLErrorWrapper(context, fname) {
-  return function() {
+  return function () {
     const rv = context[fname](...arguments);
     const err = context.getError();
     if (err != 0) {
@@ -52,7 +36,7 @@ function create3DDebugContext(context) {
       // console.log("create3DDebugContext: Error accessing " + i);
     }
   }
-  wrap.getError = function() {
+  wrap.getError = function () {
     return context.getError();
   };
   return wrap;
@@ -62,7 +46,7 @@ function create3DDebugContext(context) {
  * Class AnalyserView
  */
 
-AnalyserView = function(canvas) {
+AnalyserView = function (canvas) {
   // NOTE: the default value of this needs to match the selected radio button
 
   // This analysis type may be overriden later on if we discover we don't support the right shader features.
@@ -90,7 +74,7 @@ AnalyserView = function(canvas) {
   this.initGL();
 };
 
-AnalyserView.prototype.getAvailableContext = function(canvas, contextList) {
+AnalyserView.prototype.getAvailableContext = function (canvas, contextList) {
   if (canvas.getContext) {
     for (let i = 0; i < contextList.length; ++i) {
       try {
@@ -104,7 +88,7 @@ AnalyserView.prototype.getAvailableContext = function(canvas, contextList) {
   return null;
 };
 
-AnalyserView.prototype.initGL = function() {
+AnalyserView.prototype.initGL = function () {
   model = new Matrix4x4();
   view = new Matrix4x4();
   projection = new Matrix4x4();
@@ -143,7 +127,7 @@ AnalyserView.prototype.initGL = function() {
     backgroundColor[0],
     backgroundColor[1],
     backgroundColor[2],
-    backgroundColor[3]
+    backgroundColor[3],
   );
   gl.enable(gl.DEPTH_TEST);
 
@@ -166,7 +150,7 @@ AnalyserView.prototype.initGL = function() {
     0.0,
     1.0,
     -1.0,
-    0.0
+    0.0,
   ]);
   let texCoords = new Float32Array([
     1.0,
@@ -180,7 +164,7 @@ AnalyserView.prototype.initGL = function() {
     0.0,
     0.0,
     1.0,
-    0.0
+    0.0,
   ]);
 
   const vboTexCoordOffset = vertices.byteLength;
@@ -194,7 +178,7 @@ AnalyserView.prototype.initGL = function() {
   gl.bufferData(
     gl.ARRAY_BUFFER,
     vboTexCoordOffset + texCoords.byteLength,
-    gl.STATIC_DRAW
+    gl.STATIC_DRAW,
   );
   gl.bufferSubData(gl.ARRAY_BUFFER, 0, vertices);
   gl.bufferSubData(gl.ARRAY_BUFFER, vboTexCoordOffset, texCoords);
@@ -232,7 +216,7 @@ AnalyserView.prototype.initGL = function() {
   gl.bufferData(
     gl.ARRAY_BUFFER,
     vbo3DTexCoordOffset + texCoords.byteLength,
-    gl.STATIC_DRAW
+    gl.STATIC_DRAW,
   );
   gl.bufferSubData(gl.ARRAY_BUFFER, 0, vertices);
   gl.bufferSubData(gl.ARRAY_BUFFER, vbo3DTexCoordOffset, texCoords);
@@ -270,31 +254,31 @@ AnalyserView.prototype.initGL = function() {
   this.frequencyShader = o3djs.shader.loadFromURL(
     gl,
     'bin/shaders/common-vertex.shader',
-    'bin/shaders/frequency-fragment.shader'
+    'bin/shaders/frequency-fragment.shader',
   );
   this.waveformShader = o3djs.shader.loadFromURL(
     gl,
     'bin/shaders/common-vertex.shader',
-    'bin/shaders/waveform-fragment.shader'
+    'bin/shaders/waveform-fragment.shader',
   );
   this.sonogramShader = o3djs.shader.loadFromURL(
     gl,
     'bin/shaders/common-vertex.shader',
-    'bin/shaders/sonogram-fragment.shader'
+    'bin/shaders/sonogram-fragment.shader',
   );
 
   if (this.has3DVisualizer) {
     this.sonogram3DShader = o3djs.shader.loadFromURL(
       gl,
       'bin/shaders/sonogram-vertex.shader',
-      'bin/shaders/sonogram-fragment.shader'
+      'bin/shaders/sonogram-fragment.shader',
     );
   }
   console.log('this.sonogramShader', this.sonogramShader);
   console.log('this.sonogram3DShader', this.sonogram3DShader);
 };
 
-AnalyserView.prototype.initByteBuffer = function() {
+AnalyserView.prototype.initByteBuffer = function () {
   const gl = this.gl;
   const TEXTURE_HEIGHT = this.TEXTURE_HEIGHT;
 
@@ -329,12 +313,12 @@ AnalyserView.prototype.initByteBuffer = function() {
       0,
       gl.ALPHA,
       gl.UNSIGNED_BYTE,
-      tmp
+      tmp,
     );
   }
 };
 
-AnalyserView.prototype.setAnalysisType = function(type) {
+AnalyserView.prototype.setAnalysisType = function (type) {
   // Check for read textures in vertex shaders.
   if (!this.has3DVisualizer && type == ANALYSISTYPE_3D_SONOGRAM) {
     return;
@@ -343,11 +327,11 @@ AnalyserView.prototype.setAnalysisType = function(type) {
   this.analysisType = type;
 };
 
-AnalyserView.prototype.analysisType = function() {
+AnalyserView.prototype.analysisType = function () {
   return this.analysisType;
 };
 
-AnalyserView.prototype.doFrequencyAnalysis = function(event) {
+AnalyserView.prototype.doFrequencyAnalysis = function (event) {
   const freqByteData = this.freqByteData;
 
   switch (this.analysisType) {
@@ -371,7 +355,7 @@ AnalyserView.prototype.doFrequencyAnalysis = function(event) {
   this.drawGL();
 };
 
-AnalyserView.prototype.drawGL = function() {
+AnalyserView.prototype.drawGL = function () {
   const canvas = this.canvas;
   const gl = this.gl;
   const vbo = this.vbo;
@@ -409,7 +393,7 @@ AnalyserView.prototype.drawGL = function() {
     1,
     gl.ALPHA,
     gl.UNSIGNED_BYTE,
-    freqByteData
+    freqByteData,
   );
 
   if (
@@ -485,7 +469,7 @@ AnalyserView.prototype.drawGL = function() {
       gl.uniform1f(sonogram3DShader.vertexYOffsetLoc, discretizedYOffset);
       gl.uniform1f(
         sonogram3DShader.verticalScaleLoc,
-        sonogram3DGeometrySize / 3.5
+        sonogram3DGeometrySize / 3.5,
       );
 
       // Set up the model, view and projection matrices
@@ -502,7 +486,7 @@ AnalyserView.prototype.drawGL = function() {
       model.translate(
         this.cameraController.xT,
         this.cameraController.yT,
-        this.cameraController.zT
+        this.cameraController.zT,
       );
 
       // Compute necessary matrices
@@ -513,7 +497,7 @@ AnalyserView.prototype.drawGL = function() {
       gl.uniformMatrix4fv(
         sonogram3DShader.worldViewProjectionLoc,
         gl.FALSE,
-        mvp.elements
+        mvp.elements,
       );
       texCoordOffset = vbo3DTexCoordOffset;
       // console.log('model',mvp.elements);
@@ -556,7 +540,7 @@ AnalyserView.prototype.drawGL = function() {
   gl.disableVertexAttribArray(texCoordLoc);
 };
 
-AnalyserView.prototype.setAnalyserNode = function(analyser) {
+AnalyserView.prototype.setAnalyserNode = function (analyser) {
   this.analyser = analyser;
 };
 

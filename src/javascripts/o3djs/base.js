@@ -1,34 +1,3 @@
-/*
- * Copyright 2009, Google Inc.
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are
- * met:
- *
- *     * Redistributions of source code must retain the above copyright
- * notice, this list of conditions and the following disclaimer.
- *     * Redistributions in binary form must reproduce the above
- * copyright notice, this list of conditions and the following disclaimer
- * in the documentation and/or other materials provided with the
- * distribution.
- *     * Neither the name of Google Inc. nor the names of its
- * contributors may be used to endorse or promote products derived from
- * this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
- * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
- * OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
- * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
- * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
- * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
- * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
 /**
  * @fileoverview Base for all o3d sample utilties.
  *    For more information about o3d see
@@ -92,7 +61,7 @@ o3djs.provided_ = [];
  * object.
  * @param {string} name name of the object that this file defines.
  */
-o3djs.provide = function(name) {
+o3djs.provide = function (name) {
   // Ensure that the same namespace isn't provided twice.
   if (o3djs.getObjectByName(name) && !o3djs.implicitNamespaces_[name]) {
     throw `Namespace "${name}" already declared.`;
@@ -129,7 +98,7 @@ o3djs.implicitNamespaces_ = {};
  *     is |o3djs.global|.
  * @private
  */
-o3djs.exportPath_ = function(name, opt_object, opt_objectToExportTo) {
+o3djs.exportPath_ = function (name, opt_object, opt_objectToExportTo) {
   const parts = name.split('.');
   let cur = opt_objectToExportTo || o3djs.global;
   let part;
@@ -164,7 +133,7 @@ o3djs.exportPath_ = function(name, opt_object, opt_objectToExportTo) {
  *     |o3djs.global|.
  * @return {Object} The object or, if not found, null.
  */
-o3djs.getObjectByName = function(name, opt_obj) {
+o3djs.getObjectByName = function (name, opt_obj) {
   const parts = name.split('.');
   let cur = opt_obj || o3djs.global;
   for (let pp = 0; pp < parts.length; ++pp) {
@@ -182,7 +151,7 @@ o3djs.getObjectByName = function(name, opt_obj) {
  * Implements a system for the dynamic resolution of dependencies.
  * @param {string} rule Rule to include, in the form o3djs.package.part.
  */
-o3djs.require = function(rule) {
+o3djs.require = function (rule) {
   // TODO(gman): For some unknown reason, when we call
   // o3djs.util.getScriptTagText_ it calls
   // document.getElementsByTagName('script') and for some reason the scripts do
@@ -227,7 +196,7 @@ o3djs.included_ = {};
 o3djs.dependencies_ = {
   visited: {}, // used when resolving dependencies to prevent us from
   // visiting the file twice.
-  written: {} // used to keep track of script files we have written.
+  written: {}, // used to keep track of script files we have written.
 };
 
 /**
@@ -235,7 +204,7 @@ o3djs.dependencies_ = {
  * bootstraps the o3djs libraries.
  * @private
  */
-o3djs.findBasePath_ = function() {
+o3djs.findBasePath_ = function () {
   const doc = o3djs.global.document;
   if (typeof doc === 'undefined') {
     return;
@@ -264,7 +233,7 @@ o3djs.findBasePath_ = function() {
  * @param {string} src Script source.
  * @private
  */
-o3djs.writeScriptTag_ = function(src) {
+o3djs.writeScriptTag_ = function (src) {
   const doc = o3djs.global.document;
   if (typeof doc !== 'undefined' && !o3djs.dependencies_.written[src]) {
     o3djs.dependencies_.written[src] = true;
@@ -277,7 +246,7 @@ o3djs.writeScriptTag_ = function(src) {
  * and calls writeScriptTag_ in the correct order.
  * @private
  */
-o3djs.writeScripts_ = function() {
+o3djs.writeScripts_ = function () {
   // the scripts we need to write this time.
   const scripts = [];
   const seenScript = {};
@@ -329,7 +298,7 @@ o3djs.writeScripts_ = function() {
  * @return {string?} Url corresponding to the rule, or null.
  * @private
  */
-o3djs.getPathFromRule_ = function(rule) {
+o3djs.getPathFromRule_ = function (rule) {
   const parts = rule.split('.');
   return `${parts.join('/')}.js`;
 };
@@ -343,7 +312,7 @@ o3djs.findBasePath_();
  * @param {*} val Variable to test.
  * @return {boolean} Whether variable is defined.
  */
-o3djs.isDef = function(val) {
+o3djs.isDef = function (val) {
   return typeof val !== 'undefined';
 };
 
@@ -371,7 +340,7 @@ o3djs.isDef = function(val) {
  * @param {Object} opt_objectToExportTo The object to add the path to; default
  *     is |o3djs.global|.
  */
-o3djs.exportSymbol = function(publicPath, object, opt_objectToExportTo) {
+o3djs.exportSymbol = function (publicPath, object, opt_objectToExportTo) {
   o3djs.exportPath_(publicPath, object, opt_objectToExportTo);
 };
 
@@ -397,7 +366,7 @@ o3djs.v8InitializerArgs_ = [];
  * @return {string} A string representation for the value.
  * @private
  */
-o3djs.valueToString_ = function(value) {
+o3djs.valueToString_ = function (value) {
   switch (typeof value) {
     case 'undefined':
       return 'undefined';
@@ -443,7 +412,7 @@ o3djs.valueToString_ = function(value) {
       var separator = '';
       for (const propertyName in valueAsObject) {
         result += `${separator}"${propertyName}": ${o3djs.valueToString_(
-          valueAsObject[propertyName]
+          valueAsObject[propertyName],
         )}`;
         separator = ',';
       }
@@ -467,10 +436,10 @@ o3djs.valueToString_ = function(value) {
  * @return {string} A string that will populate the namespace.
  * @private
  */
-o3djs.namespaceInitializer_ = function(
+o3djs.namespaceInitializer_ = function (
   namespaceObject,
   namespaceName,
-  opt_args
+  opt_args,
 ) {
   let result = `${namespaceName} = {};\n`;
   for (const propertyName in namespaceObject) {
@@ -484,7 +453,7 @@ o3djs.namespaceInitializer_ = function(
     ) {
       result += o3djs.namespaceInitializer_(
         propertyValue,
-        propertyNamespaceName
+        propertyNamespaceName,
       );
     } else {
       let valueAsString = o3djs.valueToString_(propertyValue);
@@ -503,7 +472,7 @@ o3djs.namespaceInitializer_ = function(
       if (typeof propertyValue === 'function' && propertyValue.prototype) {
         result += o3djs.namespaceInitializer_(
           propertyValue.prototype,
-          `${propertyNamespaceName}.prototype`
+          `${propertyNamespaceName}.prototype`,
         );
       }
     }
@@ -531,7 +500,7 @@ o3djs.base.o3d = null;
  * used to initialize future V8 instances. It is automatically
  * called by o3djs.util.makeClients.
  */
-o3djs.base.snapshotProvidedNamespaces = function() {
+o3djs.base.snapshotProvidedNamespaces = function () {
   // Snapshot the V8 initializer string from the current state of browser
   // JavaScript the first time this is called.
   o3djs.v8Initializer_ = 'function(args_) {\n';
@@ -541,7 +510,7 @@ o3djs.base.snapshotProvidedNamespaces = function() {
     o3djs.v8Initializer_ += o3djs.namespaceInitializer_(
       /** @type {!Object} */ (object),
       o3djs.provided_[i],
-      o3djs.v8InitializerArgs_
+      o3djs.v8InitializerArgs_,
     );
   }
 
@@ -554,18 +523,18 @@ o3djs.base.snapshotProvidedNamespaces = function() {
  * called by o3djs.util.makeClients.
  * @param {!o3d.plugin} clientObject O3D.Plugin Object.
  */
-o3djs.base.initV8 = function(clientObject) {
-  const v8Init = function(initializer, args) {
+o3djs.base.initV8 = function (clientObject) {
+  const v8Init = function (initializer, args) {
     // Set up the o3djs namespace.
     const o3djsBrowser = o3djs;
     o3djs = {};
     o3djs.browser = o3djsBrowser;
-    o3djs.global = (function() {
+    o3djs.global = (function () {
       return this;
-    })();
+    }());
 
-    o3djs.require = function(rule) {};
-    o3djs.provide = function(rule) {};
+    o3djs.require = function (rule) {};
+    o3djs.provide = function (rule) {};
 
     // Evaluate the initializer string with the arguments containing bindings
     // to browser side objects.
@@ -578,7 +547,7 @@ o3djs.base.initV8 = function(clientObject) {
 
   clientObject.eval(v8Init.toString())(
     o3djs.v8Initializer_,
-    o3djs.v8InitializerArgs_
+    o3djs.v8InitializerArgs_,
   );
 };
 
@@ -589,7 +558,7 @@ o3djs.base.initV8 = function(clientObject) {
  *
  * @param {!Element} clientObject O3D.Plugin Object.
  */
-o3djs.base.init = function(clientObject) {
+o3djs.base.init = function (clientObject) {
   function recursivelyCopyProperties(object) {
     const copy = {};
     let hasProperties = false;
@@ -623,7 +592,7 @@ o3djs.base.init = function(clientObject) {
  * @param {*} value A value.
  * @return {boolean} Whether the value is an array.
  */
-o3djs.base.isArray = function(value) {
+o3djs.base.isArray = function (value) {
   const valueAsObject = /** @type {!Object} */ (value);
   return (
     typeof value === 'object' &&
@@ -637,7 +606,7 @@ o3djs.base.isArray = function(value) {
  * Check if the o3djs library has been initialized.
  * @return {boolean} true if ready, false if not.
  */
-o3djs.base.ready = function() {
+o3djs.base.ready = function () {
   return o3djs.base.o3d != null;
 };
 
@@ -647,7 +616,7 @@ o3djs.base.ready = function() {
  * @param {string} name Name to un-obfuscate.
  * @return {string} un-obfuscated name.
  */
-o3djs.base.maybeDeobfuscateFunctionName_ = function(name) {
+o3djs.base.maybeDeobfuscateFunctionName_ = function (name) {
   return name;
 };
 
@@ -656,13 +625,13 @@ o3djs.base.maybeDeobfuscateFunctionName_ = function(name) {
  * @param {!Object} subClass Class that wants to inherit.
  * @param {!Object} superClass Class to inherit from.
  */
-o3djs.base.inherit = function(subClass, superClass) {
+o3djs.base.inherit = function (subClass, superClass) {
   /**
    * TmpClass.
    * @ignore
    * @constructor
    */
-  const TmpClass = function() {};
+  const TmpClass = function () {};
   TmpClass.prototype = superClass.prototype;
   subClass.prototype = new TmpClass();
 };
@@ -672,7 +641,7 @@ o3djs.base.inherit = function(subClass, superClass) {
  * @param {!Exception} excp The exception to get a stack trace from.
  * @return {!Array.<string>} An array of strings of the stack trace.
  */
-o3djs.base.parseErrorStack = function(excp) {
+o3djs.base.parseErrorStack = function (excp) {
   const stack = [];
   let name;
   let line;
@@ -718,7 +687,7 @@ o3djs.base.parseErrorStack = function(excp) {
  *      name from.
  * @return {string} function name or 'anonymous' if not found.
  */
-o3djs.base.getFunctionName = function(aFunction) {
+o3djs.base.getFunctionName = function (aFunction) {
   const regexpResult = aFunction.toString().match(/function(\s*)(\w*)/);
   if (regexpResult && regexpResult.length >= 2 && regexpResult[2]) {
     return o3djs.base.maybeDeobfuscateFunctionName_(regexpResult[2]);
@@ -731,7 +700,7 @@ o3djs.base.getFunctionName = function(aFunction) {
  * @param {Array.<string>} stack An array of errors.
  * @return {string} The pretty stack.
  */
-o3djs.base.formatErrorStack = function(stack) {
+o3djs.base.formatErrorStack = function (stack) {
   let result = '';
   for (let i = 0; i < stack.length; i++) {
     result += `> ${stack[i]}\n`;
@@ -745,7 +714,7 @@ o3djs.base.formatErrorStack = function(stack) {
  *     stack. Example: Pass in 1 to remove yourself from the stack trace.
  * @return {string} The stack trace.
  */
-o3djs.base.getStackTrace = function(stripCount) {
+o3djs.base.getStackTrace = function (stripCount) {
   let result = '';
 
   if (typeof arguments.caller !== 'undefined') {
@@ -766,7 +735,7 @@ o3djs.base.getStackTrace = function(stripCount) {
     } catch (testExcp) {
       const stack = o3djs.base.parseErrorStack(testExcp);
       result += o3djs.base.formatErrorStack(
-        stack.slice(3 + stripCount, stack.length)
+        stack.slice(3 + stripCount, stack.length),
       );
     }
   }
@@ -779,8 +748,8 @@ o3djs.base.getStackTrace = function(stripCount) {
  * first error.
  * @param {!o3d.Client} client The client object of the plugin.
  */
-o3djs.base.setErrorHandler = function(client) {
-  client.setErrorCallback(msg => {
+o3djs.base.setErrorHandler = function (client) {
+  client.setErrorCallback((msg) => {
     // Clear the error callback. Otherwise if the callback is happening
     // during rendering it's possible the user will not be able to
     // get out of an infinite loop of alerts.
@@ -793,7 +762,7 @@ o3djs.base.setErrorHandler = function(client) {
  * Returns true if the user's browser is Microsoft IE.
  * @return {boolean} true if the user's browser is Microsoft IE.
  */
-o3djs.base.IsMSIE = function() {
+o3djs.base.IsMSIE = function () {
   const ua = navigator.userAgent.toLowerCase();
   const msie = /msie/.test(ua) && !/opera/.test(ua);
   return msie;
@@ -803,6 +772,6 @@ o3djs.base.IsMSIE = function() {
  * to create the plugin.
  * @return {boolean} true if the user's browser is Chrome 1.0.
  */
-o3djs.base.IsChrome10 = function() {
+o3djs.base.IsChrome10 = function () {
   return navigator.userAgent.indexOf('Chrome/1.0') >= 0;
 };

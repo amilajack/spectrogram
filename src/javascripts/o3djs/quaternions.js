@@ -1,34 +1,3 @@
-/*
- * Copyright 2009, Google Inc.
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are
- * met:
- *
- *     * Redistributions of source code must retain the above copyright
- * notice, this list of conditions and the following disclaimer.
- *     * Redistributions in binary form must reproduce the above
- * copyright notice, this list of conditions and the following disclaimer
- * in the documentation and/or other materials provided with the
- * distribution.
- *     * Neither the name of Google Inc. nor the names of its
- * contributors may be used to endorse or promote products derived from
- * this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
- * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
- * OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
- * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
- * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
- * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
- * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
 /**
  * @fileoverview This file contains various functions for quaternion arithmetic
  * and converting between rotation matrices and quaternions.  It adds them to
@@ -65,7 +34,7 @@ o3djs.quaternions.Quaterion = goog.typedef;
  *     of which is in question.
  * @return {string} Either the string 'Scalar' or 'Quaternion'.
  */
-o3djs.quaternions.mathType = function(a) {
+o3djs.quaternions.mathType = function (a) {
   if (typeof a === 'number') {
     return 'Scalar';
   }
@@ -77,7 +46,7 @@ o3djs.quaternions.mathType = function(a) {
  * @param {!o3djs.quaternions.Quaterion} q The quaternion.
  * @return {!o3djs.quaternions.Quaterion} A new quaternion identical to q.
  */
-o3djs.quaternions.copy = function(q) {
+o3djs.quaternions.copy = function (q) {
   return q.slice();
 };
 
@@ -86,7 +55,7 @@ o3djs.quaternions.copy = function(q) {
  * @param {!o3djs.quaternions.Quaterion} q The quaternion.
  * @return {!o3djs.quaternions.Quaterion} -q.
  */
-o3djs.quaternions.negative = function(q) {
+o3djs.quaternions.negative = function (q) {
   return [-q[0], -q[1], -q[2], -q[3]];
 };
 
@@ -96,7 +65,7 @@ o3djs.quaternions.negative = function(q) {
  * @param {!o3djs.quaternions.Quaterion} b Operand Quaternion.
  * @return {!o3djs.quaternions.Quaterion} The sum of a and b.
  */
-o3djs.quaternions.addQuaternionQuaternion = function(a, b) {
+o3djs.quaternions.addQuaternionQuaternion = function (a, b) {
   return [a[0] + b[0], a[1] + b[1], a[2] + b[2], a[3] + b[3]];
 };
 
@@ -106,7 +75,7 @@ o3djs.quaternions.addQuaternionQuaternion = function(a, b) {
  * @param {number} b Operand Scalar.
  * @return {!o3djs.quaternions.Quaterion} The sum of a and b.
  */
-o3djs.quaternions.addQuaternionScalar = function(a, b) {
+o3djs.quaternions.addQuaternionScalar = function (a, b) {
   return a.slice(0, 3).concat(a[3] + b);
 };
 
@@ -116,7 +85,7 @@ o3djs.quaternions.addQuaternionScalar = function(a, b) {
  * @param {!o3djs.quaternions.Quaterion} b Operand quaternion.
  * @return {!o3djs.quaternions.Quaterion} The sum of a and b.
  */
-o3djs.quaternions.addScalarQuaternion = function(a, b) {
+o3djs.quaternions.addScalarQuaternion = function (a, b) {
   return b.slice(0, 3).concat(a + b[3]);
 };
 
@@ -126,7 +95,7 @@ o3djs.quaternions.addScalarQuaternion = function(a, b) {
  * @param {!o3djs.quaternions.Quaterion} b Operand quaternion.
  * @return {!o3djs.quaternions.Quaterion} The difference a - b.
  */
-o3djs.quaternions.subQuaternionQuaternion = function(a, b) {
+o3djs.quaternions.subQuaternionQuaternion = function (a, b) {
   return [a[0] - b[0], a[1] - b[1], a[2] - b[2], a[3] - b[3]];
 };
 
@@ -136,7 +105,7 @@ o3djs.quaternions.subQuaternionQuaternion = function(a, b) {
  * @param {number} b Operand scalar.
  * @return {!o3djs.quaternions.Quaterion} The difference a - b.
  */
-o3djs.quaternions.subQuaternionScalar = function(a, b) {
+o3djs.quaternions.subQuaternionScalar = function (a, b) {
   return a.slice(0, 3).concat(a[3] - b);
 };
 
@@ -146,7 +115,7 @@ o3djs.quaternions.subQuaternionScalar = function(a, b) {
  * @param {!o3djs.quaternions.Quaterion} b Operand quaternion.
  * @return {!o3djs.quaternions.Quaterion} The difference a - b.
  */
-o3djs.quaternions.subScalarQuaternion = function(a, b) {
+o3djs.quaternions.subScalarQuaternion = function (a, b) {
   return [-b[0], -b[1], -b[2], a - b[3]];
 };
 
@@ -156,7 +125,7 @@ o3djs.quaternions.subScalarQuaternion = function(a, b) {
  * @param {!o3djs.quaternions.Quaternion} q The quaternion.
  * @return {!o3djs.quaternions.Quaternion} The product of k and q.
  */
-o3djs.quaternions.mulScalarQuaternion = function(k, q) {
+o3djs.quaternions.mulScalarQuaternion = function (k, q) {
   return [k * q[0], k * q[1], k * q[2], k * q[3]];
 };
 
@@ -166,7 +135,7 @@ o3djs.quaternions.mulScalarQuaternion = function(k, q) {
  * @param {number} k The scalar.
  * @return {!o3djs.quaternions.Quaterion} The product of k and v.
  */
-o3djs.quaternions.mulQuaternionScalar = function(q, k) {
+o3djs.quaternions.mulQuaternionScalar = function (q, k) {
   return [k * q[0], k * q[1], k * q[2], k * q[3]];
 };
 
@@ -176,7 +145,7 @@ o3djs.quaternions.mulQuaternionScalar = function(q, k) {
  * @param {!o3djs.quaternions.Quaterion} b Operand quaternion.
  * @return {!o3djs.quaternions.Quaterion} The quaternion product a * b.
  */
-o3djs.quaternions.mulQuaternionQuaternion = function(a, b) {
+o3djs.quaternions.mulQuaternionQuaternion = function (a, b) {
   const aX = a[0];
   const aY = a[1];
   const aZ = a[2];
@@ -190,7 +159,7 @@ o3djs.quaternions.mulQuaternionQuaternion = function(a, b) {
     aW * bX + aX * bW + aY * bZ - aZ * bY,
     aW * bY + aY * bW + aZ * bX - aX * bZ,
     aW * bZ + aZ * bW + aX * bY - aY * bX,
-    aW * bW - aX * bX - aY * bY - aZ * bZ
+    aW * bW - aX * bX - aY * bY - aZ * bZ,
   ];
 };
 
@@ -200,7 +169,7 @@ o3djs.quaternions.mulQuaternionQuaternion = function(a, b) {
  * @param {!o3djs.quaternions.Quaterion} b Operand quaternion.
  * @return {!o3djs.quaternions.Quaterion} The quaternion quotient a / b.
  */
-o3djs.quaternions.divQuaternionQuaternion = function(a, b) {
+o3djs.quaternions.divQuaternionQuaternion = function (a, b) {
   const aX = a[0];
   const aY = a[1];
   const aZ = a[2];
@@ -215,7 +184,7 @@ o3djs.quaternions.divQuaternionQuaternion = function(a, b) {
     (aX * bW - aW * bX - aY * bZ + aZ * bY) * d,
     (aX * bZ - aW * bY + aY * bW - aZ * bX) * d,
     (aY * bX + aZ * bW - aW * bZ - aX * bY) * d,
-    (aW * bW + aX * bX + aY * bY + aZ * bZ) * d
+    (aW * bW + aX * bX + aY * bY + aZ * bZ) * d,
   ];
 };
 
@@ -225,7 +194,7 @@ o3djs.quaternions.divQuaternionQuaternion = function(a, b) {
  * @param {number} k The scalar.
  * @return {!o3djs.quaternions.Quaterion} q The quaternion q divided by k.
  */
-o3djs.quaternions.divQuaternionScalar = function(q, k) {
+o3djs.quaternions.divQuaternionScalar = function (q, k) {
   return [q[0] / k, q[1] / k, q[2] / k, q[3] / k];
 };
 
@@ -235,7 +204,7 @@ o3djs.quaternions.divQuaternionScalar = function(q, k) {
  * @param {!o3djs.quaternions.Quaterion} b Operand quaternion.
  * @return {!o3djs.quaternions.Quaterion} The quaternion product.
  */
-o3djs.quaternions.divScalarQuaternion = function(a, b) {
+o3djs.quaternions.divScalarQuaternion = function (a, b) {
   const b0 = b[0];
   const b1 = b[1];
   const b2 = b[2];
@@ -250,7 +219,7 @@ o3djs.quaternions.divScalarQuaternion = function(a, b) {
  * @param {!o3djs.quaternions.Quaterion} q The quaternion.
  * @return {!o3djs.quaternions.Quaterion} The multiplicative inverse of q.
  */
-o3djs.quaternions.inverse = function(q) {
+o3djs.quaternions.inverse = function (q) {
   const q0 = q[0];
   const q1 = q[1];
   const q2 = q[2];
@@ -266,7 +235,7 @@ o3djs.quaternions.inverse = function(q) {
  * @param {(!o3djs.quaternions.Quaterion|number)} b Operand.
  * @return {(!o3djs.quaternions.Quaterion|number)} The product of a and b.
  */
-o3djs.quaternions.mul = function(a, b) {
+o3djs.quaternions.mul = function (a, b) {
   return o3djs.quaternions[
     `mul${o3djs.quaternions.mathType(a)}${o3djs.quaternions.mathType(b)}`
   ](a, b);
@@ -278,7 +247,7 @@ o3djs.quaternions.mul = function(a, b) {
  * @param {(!o3djs.quaternions.Quaterion|number)} b Operand.
  * @return {(!o3djs.quaternions.Quaterion|number)} The quotient of a and b.
  */
-o3djs.quaternions.div = function(a, b) {
+o3djs.quaternions.div = function (a, b) {
   return o3djs.quaternions[
     `div${o3djs.quaternions.mathType(a)}${o3djs.quaternions.mathType(b)}`
   ](a, b);
@@ -290,7 +259,7 @@ o3djs.quaternions.div = function(a, b) {
  * @param {(!o3djs.quaternions.Quaterion|number)} b Operand.
  * @return {(!o3djs.quaternions.Quaterion|number)} The sum of a and b.
  */
-o3djs.quaternions.add = function(a, b) {
+o3djs.quaternions.add = function (a, b) {
   return o3djs.quaternions[
     `add${o3djs.quaternions.mathType(a)}${o3djs.quaternions.mathType(b)}`
   ](a, b);
@@ -302,7 +271,7 @@ o3djs.quaternions.add = function(a, b) {
  * @param {(!o3djs.quaternions.Quaterion|number)} b Operand.
  * @return {(!o3djs.quaternions.Quaterion|number)} The difference of a and b.
  */
-o3djs.quaternions.sub = function(a, b) {
+o3djs.quaternions.sub = function (a, b) {
   return o3djs.quaternions[
     `sub${o3djs.quaternions.mathType(a)}${o3djs.quaternions.mathType(b)}`
   ](a, b);
@@ -314,7 +283,7 @@ o3djs.quaternions.sub = function(a, b) {
  * @param {!o3djs.quaternions.Quaterion} a The Quaternion.
  * @return {number} The length of a.
  */
-o3djs.quaternions.length = function(a) {
+o3djs.quaternions.length = function (a) {
   return Math.sqrt(a[0] * a[0] + a[1] * a[1] + a[2] * a[2] + a[3] * a[3]);
 };
 
@@ -324,7 +293,7 @@ o3djs.quaternions.length = function(a) {
  * @param {!o3djs.quaternions.Quaterion} a The quaternion.
  * @return {number} The square of the length of a.
  */
-o3djs.quaternions.lengthSquared = function(a) {
+o3djs.quaternions.lengthSquared = function (a) {
   return a[0] * a[0] + a[1] * a[1] + a[2] * a[2] + a[3] * a[3];
 };
 
@@ -334,7 +303,7 @@ o3djs.quaternions.lengthSquared = function(a) {
  * @return {!o3djs.quaternions.Quaterion} A unit length quaternion pointing in
  *     the same direction as a.
  */
-o3djs.quaternions.normalize = function(a) {
+o3djs.quaternions.normalize = function (a) {
   const d =
     1 / Math.sqrt(a[0] * a[0] + a[1] * a[1] + a[2] * a[2] + a[3] * a[3]);
   return [a[0] * d, a[1] * d, a[2] * d, a[3] * d];
@@ -345,7 +314,7 @@ o3djs.quaternions.normalize = function(a) {
  * @param {!o3djs.quaternions.Quaterion} q The quaternion.
  * @return {!o3djs.quaternions.Quaterion} The conjugate of q.
  */
-o3djs.quaternions.conjugate = function(q) {
+o3djs.quaternions.conjugate = function (q) {
   return [-q[0], -q[1], -q[2], q[3]];
 };
 
@@ -354,7 +323,7 @@ o3djs.quaternions.conjugate = function(q) {
  * @param {number} angle The angle by which to rotate (in radians).
  * @return {!o3djs.quaternions.Quaterion} The quaternion.
  */
-o3djs.quaternions.rotationX = function(angle) {
+o3djs.quaternions.rotationX = function (angle) {
   return [Math.sin(angle / 2), 0, 0, Math.cos(angle / 2)];
 };
 
@@ -363,7 +332,7 @@ o3djs.quaternions.rotationX = function(angle) {
  * @param {number} angle The angle by which to rotate (in radians).
  * @return {!o3djs.quaternions.Quaterion} The quaternion.
  */
-o3djs.quaternions.rotationY = function(angle) {
+o3djs.quaternions.rotationY = function (angle) {
   return [0, Math.sin(angle / 2), 0, Math.cos(angle / 2)];
 };
 
@@ -372,7 +341,7 @@ o3djs.quaternions.rotationY = function(angle) {
  * @param {number} angle The angle by which to rotate (in radians).
  * @return {!o3djs.quaternions.Quaterion} The quaternion.
  */
-o3djs.quaternions.rotationZ = function(angle) {
+o3djs.quaternions.rotationZ = function (angle) {
   return [0, 0, Math.sin(angle / 2), Math.cos(angle / 2)];
 };
 
@@ -384,7 +353,7 @@ o3djs.quaternions.rotationZ = function(angle) {
  * @return {!o3djs.quaternions.Quaterion} A quaternion which rotates angle
  *     radians around the axis.
  */
-o3djs.quaternions.axisRotation = function(axis, angle) {
+o3djs.quaternions.axisRotation = function (axis, angle) {
   const d =
     1 / Math.sqrt(axis[0] * axis[0] + axis[1] * axis[1] + axis[2] * axis[2]);
   const sin = Math.sin(angle / 2);
@@ -401,7 +370,7 @@ o3djs.quaternions.axisRotation = function(axis, angle) {
  * @param {!o3djs.quaternions.Quaterion} q The quaternion.
  * @return {!o3djs.math.Matrix4} A 4-by-4 rotation matrix.
  */
-o3djs.quaternions.quaternionToRotation = function(q) {
+o3djs.quaternions.quaternionToRotation = function (q) {
   const qX = q[0];
   const qY = q[1];
   const qZ = q[2];
@@ -431,21 +400,21 @@ o3djs.quaternions.quaternionToRotation = function(q) {
       (qWqW + qXqX - qYqY - qZqZ) / d,
       2 * (qWqZ + qXqY) / d,
       2 * (qXqZ - qWqY) / d,
-      0
+      0,
     ],
     [
       2 * (qXqY - qWqZ) / d,
       (qWqW - qXqX + qYqY - qZqZ) / d,
       2 * (qWqX + qYqZ) / d,
-      0
+      0,
     ],
     [
       2 * (qWqY + qXqZ) / d,
       2 * (qYqZ - qWqX) / d,
       (qWqW - qXqX - qYqY + qZqZ) / d,
-      0
+      0,
     ],
-    [0, 0, 0, 1]
+    [0, 0, 0, 1],
   ];
 };
 
@@ -456,7 +425,7 @@ o3djs.quaternions.quaternionToRotation = function(q) {
  * @return {!o3djs.quaternions.Quaterion} A quaternion q such that
  *     quaternions.quaternionToRotation(q) is m.
  */
-o3djs.quaternions.rotationToQuaternion = function(m) {
+o3djs.quaternions.rotationToQuaternion = function (m) {
   let u;
   let v;
   let w;
