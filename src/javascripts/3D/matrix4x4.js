@@ -1,31 +1,4 @@
 /*
- * Copyright (c) 2009, Mozilla Corp
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *     * Redistributions of source code must retain the above copyright
- *       notice, this list of conditions and the following disclaimer.
- *     * Redistributions in binary form must reproduce the above copyright
- *       notice, this list of conditions and the following disclaimer in the
- *       documentation and/or other materials provided with the distribution.
- *     * Neither the name of the <organization> nor the
- *       names of its contributors may be used to endorse or promote products
- *       derived from this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY <copyright holder> ''AS IS'' AND ANY
- * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
- * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL <copyright holder> BE LIABLE FOR ANY
- * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
- * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
-/*
  * Based on sample code from the OpenGL(R) ES 2.0 Programming Guide, which carriers
  * the following header:
  *
@@ -42,12 +15,12 @@
 // A simple 4x4 Matrix utility class
 //
 
-function Matrix4x4() {
-  this.elements = Array(16);
-  this.loadIdentity();
-}
+export default class Matrix4x4 {
+  constructor() {
+    this.elements = Array(16);
+    this.loadIdentity();
+  }
 
-Matrix4x4.prototype = {
   scale(sx, sy, sz) {
     this.elements[0 * 4 + 0] *= sx;
     this.elements[0 * 4 + 1] *= sx;
@@ -65,7 +38,7 @@ Matrix4x4.prototype = {
     this.elements[2 * 4 + 3] *= sz;
 
     return this;
-  },
+  }
 
   translate(tx, ty, tz) {
     this.elements[3 * 4 + 0] +=
@@ -86,7 +59,7 @@ Matrix4x4.prototype = {
       this.elements[2 * 4 + 3] * tz;
 
     return this;
-  },
+  }
 
   rotate(angle, x, y, z) {
     const mag = Math.sqrt(x * x + y * y + z * z);
@@ -94,7 +67,15 @@ Matrix4x4.prototype = {
     const cosAngle = Math.cos(angle * Math.PI / 180.0);
 
     if (mag > 0) {
-      let xx, yy, zz, xy, yz, zx, xs, ys, zs;
+      let xx;
+      let yy;
+      let zz;
+      let xy;
+      let yz;
+      let zx;
+      let xs;
+      let ys;
+      let zs;
       let oneMinusCos;
       let rotMat;
 
@@ -140,7 +121,7 @@ Matrix4x4.prototype = {
     }
 
     return this;
-  },
+  }
 
   frustum(left, right, bottom, top, nearZ, farZ) {
     const deltaX = right - left;
@@ -184,14 +165,14 @@ Matrix4x4.prototype = {
     this.elements = frust.elements;
 
     return this;
-  },
+  }
 
   perspective(fovy, aspect, nearZ, farZ) {
     const frustumH = Math.tan(fovy / 360.0 * Math.PI) * nearZ;
     const frustumW = frustumH * aspect;
 
     return this.frustum(-frustumW, frustumW, -frustumH, frustumH, nearZ, farZ);
-  },
+  }
 
   ortho(left, right, bottom, top, nearZ, farZ) {
     const deltaX = right - left;
@@ -200,7 +181,7 @@ Matrix4x4.prototype = {
 
     let ortho = new Matrix4x4();
 
-    if (deltaX == 0.0 || deltaY == 0.0 || deltaZ == 0.0) {
+    if (deltaX === 0.0 || deltaY === 0.0 || deltaZ === 0.0) {
       return this;
     }
 
@@ -215,40 +196,40 @@ Matrix4x4.prototype = {
     this.elements = ortho.elements;
 
     return this;
-  },
+  }
 
-  multiply(right) {
+  multiply({ elements }) {
     const tmp = new Matrix4x4();
 
     for (let i = 0; i < 4; i++) {
       tmp.elements[i * 4 + 0] =
-        this.elements[i * 4 + 0] * right.elements[0 * 4 + 0] +
-        this.elements[i * 4 + 1] * right.elements[1 * 4 + 0] +
-        this.elements[i * 4 + 2] * right.elements[2 * 4 + 0] +
-        this.elements[i * 4 + 3] * right.elements[3 * 4 + 0];
+        this.elements[i * 4 + 0] * elements[0 * 4 + 0] +
+        this.elements[i * 4 + 1] * elements[1 * 4 + 0] +
+        this.elements[i * 4 + 2] * elements[2 * 4 + 0] +
+        this.elements[i * 4 + 3] * elements[3 * 4 + 0];
 
       tmp.elements[i * 4 + 1] =
-        this.elements[i * 4 + 0] * right.elements[0 * 4 + 1] +
-        this.elements[i * 4 + 1] * right.elements[1 * 4 + 1] +
-        this.elements[i * 4 + 2] * right.elements[2 * 4 + 1] +
-        this.elements[i * 4 + 3] * right.elements[3 * 4 + 1];
+        this.elements[i * 4 + 0] * elements[0 * 4 + 1] +
+        this.elements[i * 4 + 1] * elements[1 * 4 + 1] +
+        this.elements[i * 4 + 2] * elements[2 * 4 + 1] +
+        this.elements[i * 4 + 3] * elements[3 * 4 + 1];
 
       tmp.elements[i * 4 + 2] =
-        this.elements[i * 4 + 0] * right.elements[0 * 4 + 2] +
-        this.elements[i * 4 + 1] * right.elements[1 * 4 + 2] +
-        this.elements[i * 4 + 2] * right.elements[2 * 4 + 2] +
-        this.elements[i * 4 + 3] * right.elements[3 * 4 + 2];
+        this.elements[i * 4 + 0] * elements[0 * 4 + 2] +
+        this.elements[i * 4 + 1] * elements[1 * 4 + 2] +
+        this.elements[i * 4 + 2] * elements[2 * 4 + 2] +
+        this.elements[i * 4 + 3] * elements[3 * 4 + 2];
 
       tmp.elements[i * 4 + 3] =
-        this.elements[i * 4 + 0] * right.elements[0 * 4 + 3] +
-        this.elements[i * 4 + 1] * right.elements[1 * 4 + 3] +
-        this.elements[i * 4 + 2] * right.elements[2 * 4 + 3] +
-        this.elements[i * 4 + 3] * right.elements[3 * 4 + 3];
+        this.elements[i * 4 + 0] * elements[0 * 4 + 3] +
+        this.elements[i * 4 + 1] * elements[1 * 4 + 3] +
+        this.elements[i * 4 + 2] * elements[2 * 4 + 3] +
+        this.elements[i * 4 + 3] * elements[3 * 4 + 3];
     }
 
     this.elements = tmp.elements;
     return this;
-  },
+  }
 
   copy() {
     const tmp = new Matrix4x4();
@@ -256,67 +237,67 @@ Matrix4x4.prototype = {
       tmp.elements[i] = this.elements[i];
     }
     return tmp;
-  },
+  }
 
   get(row, col) {
     return this.elements[4 * row + col];
-  },
+  }
 
   // In-place inversion
   invert() {
-    const tmp_0 = this.get(2, 2) * this.get(3, 3);
-    const tmp_1 = this.get(3, 2) * this.get(2, 3);
-    const tmp_2 = this.get(1, 2) * this.get(3, 3);
-    const tmp_3 = this.get(3, 2) * this.get(1, 3);
-    const tmp_4 = this.get(1, 2) * this.get(2, 3);
-    const tmp_5 = this.get(2, 2) * this.get(1, 3);
-    const tmp_6 = this.get(0, 2) * this.get(3, 3);
-    const tmp_7 = this.get(3, 2) * this.get(0, 3);
-    const tmp_8 = this.get(0, 2) * this.get(2, 3);
-    const tmp_9 = this.get(2, 2) * this.get(0, 3);
-    const tmp_10 = this.get(0, 2) * this.get(1, 3);
-    const tmp_11 = this.get(1, 2) * this.get(0, 3);
-    const tmp_12 = this.get(2, 0) * this.get(3, 1);
-    const tmp_13 = this.get(3, 0) * this.get(2, 1);
-    const tmp_14 = this.get(1, 0) * this.get(3, 1);
-    const tmp_15 = this.get(3, 0) * this.get(1, 1);
-    const tmp_16 = this.get(1, 0) * this.get(2, 1);
-    const tmp_17 = this.get(2, 0) * this.get(1, 1);
-    const tmp_18 = this.get(0, 0) * this.get(3, 1);
-    const tmp_19 = this.get(3, 0) * this.get(0, 1);
-    const tmp_20 = this.get(0, 0) * this.get(2, 1);
-    const tmp_21 = this.get(2, 0) * this.get(0, 1);
-    const tmp_22 = this.get(0, 0) * this.get(1, 1);
-    const tmp_23 = this.get(1, 0) * this.get(0, 1);
+    const tmp0 = this.get(2, 2) * this.get(3, 3);
+    const tmp1 = this.get(3, 2) * this.get(2, 3);
+    const tmp2 = this.get(1, 2) * this.get(3, 3);
+    const tmp3 = this.get(3, 2) * this.get(1, 3);
+    const tmp4 = this.get(1, 2) * this.get(2, 3);
+    const tmp5 = this.get(2, 2) * this.get(1, 3);
+    const tmp6 = this.get(0, 2) * this.get(3, 3);
+    const tmp7 = this.get(3, 2) * this.get(0, 3);
+    const tmp8 = this.get(0, 2) * this.get(2, 3);
+    const tmp9 = this.get(2, 2) * this.get(0, 3);
+    const tmp10 = this.get(0, 2) * this.get(1, 3);
+    const tmp11 = this.get(1, 2) * this.get(0, 3);
+    const tmp12 = this.get(2, 0) * this.get(3, 1);
+    const tmp13 = this.get(3, 0) * this.get(2, 1);
+    const tmp14 = this.get(1, 0) * this.get(3, 1);
+    const tmp15 = this.get(3, 0) * this.get(1, 1);
+    const tmp16 = this.get(1, 0) * this.get(2, 1);
+    const tmp17 = this.get(2, 0) * this.get(1, 1);
+    const tmp18 = this.get(0, 0) * this.get(3, 1);
+    const tmp19 = this.get(3, 0) * this.get(0, 1);
+    const tmp20 = this.get(0, 0) * this.get(2, 1);
+    const tmp21 = this.get(2, 0) * this.get(0, 1);
+    const tmp22 = this.get(0, 0) * this.get(1, 1);
+    const tmp23 = this.get(1, 0) * this.get(0, 1);
 
     const t0 =
-      tmp_0 * this.get(1, 1) +
-      tmp_3 * this.get(2, 1) +
-      tmp_4 * this.get(3, 1) -
-      (tmp_1 * this.get(1, 1) +
-        tmp_2 * this.get(2, 1) +
-        tmp_5 * this.get(3, 1));
+      tmp0 * this.get(1, 1) +
+      tmp3 * this.get(2, 1) +
+      tmp4 * this.get(3, 1) -
+      (tmp1 * this.get(1, 1) +
+        tmp2 * this.get(2, 1) +
+        tmp5 * this.get(3, 1));
     const t1 =
-      tmp_1 * this.get(0, 1) +
-      tmp_6 * this.get(2, 1) +
-      tmp_9 * this.get(3, 1) -
-      (tmp_0 * this.get(0, 1) +
-        tmp_7 * this.get(2, 1) +
-        tmp_8 * this.get(3, 1));
+      tmp1 * this.get(0, 1) +
+      tmp6 * this.get(2, 1) +
+      tmp9 * this.get(3, 1) -
+      (tmp0 * this.get(0, 1) +
+        tmp7 * this.get(2, 1) +
+        tmp8 * this.get(3, 1));
     const t2 =
-      tmp_2 * this.get(0, 1) +
-      tmp_7 * this.get(1, 1) +
-      tmp_10 * this.get(3, 1) -
-      (tmp_3 * this.get(0, 1) +
-        tmp_6 * this.get(1, 1) +
-        tmp_11 * this.get(3, 1));
+      tmp2 * this.get(0, 1) +
+      tmp7 * this.get(1, 1) +
+      tmp10 * this.get(3, 1) -
+      (tmp3 * this.get(0, 1) +
+        tmp6 * this.get(1, 1) +
+        tmp11 * this.get(3, 1));
     const t3 =
-      tmp_5 * this.get(0, 1) +
-      tmp_8 * this.get(1, 1) +
-      tmp_11 * this.get(2, 1) -
-      (tmp_4 * this.get(0, 1) +
-        tmp_9 * this.get(1, 1) +
-        tmp_10 * this.get(2, 1));
+      tmp5 * this.get(0, 1) +
+      tmp8 * this.get(1, 1) +
+      tmp11 * this.get(2, 1) -
+      (tmp4 * this.get(0, 1) +
+        tmp9 * this.get(1, 1) +
+        tmp10 * this.get(2, 1));
 
     const d =
       1.0 /
@@ -325,134 +306,134 @@ Matrix4x4.prototype = {
         this.get(2, 0) * t2 +
         this.get(3, 0) * t3);
 
-    const out_00 = d * t0;
-    const out_01 = d * t1;
-    const out_02 = d * t2;
-    const out_03 = d * t3;
+    const out00 = d * t0;
+    const out01 = d * t1;
+    const out02 = d * t2;
+    const out03 = d * t3;
 
-    const out_10 =
+    const out10 =
       d *
-      (tmp_1 * this.get(1, 0) +
-        tmp_2 * this.get(2, 0) +
-        tmp_5 * this.get(3, 0) -
-        (tmp_0 * this.get(1, 0) +
-          tmp_3 * this.get(2, 0) +
-          tmp_4 * this.get(3, 0)));
-    const out_11 =
+      (tmp1 * this.get(1, 0) +
+        tmp2 * this.get(2, 0) +
+        tmp5 * this.get(3, 0) -
+        (tmp0 * this.get(1, 0) +
+          tmp3 * this.get(2, 0) +
+          tmp4 * this.get(3, 0)));
+    const out11 =
       d *
-      (tmp_0 * this.get(0, 0) +
-        tmp_7 * this.get(2, 0) +
-        tmp_8 * this.get(3, 0) -
-        (tmp_1 * this.get(0, 0) +
-          tmp_6 * this.get(2, 0) +
-          tmp_9 * this.get(3, 0)));
-    const out_12 =
+      (tmp0 * this.get(0, 0) +
+        tmp7 * this.get(2, 0) +
+        tmp8 * this.get(3, 0) -
+        (tmp1 * this.get(0, 0) +
+          tmp6 * this.get(2, 0) +
+          tmp9 * this.get(3, 0)));
+    const out12 =
       d *
-      (tmp_3 * this.get(0, 0) +
-        tmp_6 * this.get(1, 0) +
-        tmp_11 * this.get(3, 0) -
-        (tmp_2 * this.get(0, 0) +
-          tmp_7 * this.get(1, 0) +
-          tmp_10 * this.get(3, 0)));
-    const out_13 =
+      (tmp3 * this.get(0, 0) +
+        tmp6 * this.get(1, 0) +
+        tmp11 * this.get(3, 0) -
+        (tmp2 * this.get(0, 0) +
+          tmp7 * this.get(1, 0) +
+          tmp10 * this.get(3, 0)));
+    const out13 =
       d *
-      (tmp_4 * this.get(0, 0) +
-        tmp_9 * this.get(1, 0) +
-        tmp_10 * this.get(2, 0) -
-        (tmp_5 * this.get(0, 0) +
-          tmp_8 * this.get(1, 0) +
-          tmp_11 * this.get(2, 0)));
+      (tmp4 * this.get(0, 0) +
+        tmp9 * this.get(1, 0) +
+        tmp10 * this.get(2, 0) -
+        (tmp5 * this.get(0, 0) +
+          tmp8 * this.get(1, 0) +
+          tmp11 * this.get(2, 0)));
 
-    const out_20 =
+    const out20 =
       d *
-      (tmp_12 * this.get(1, 3) +
-        tmp_15 * this.get(2, 3) +
-        tmp_16 * this.get(3, 3) -
-        (tmp_13 * this.get(1, 3) +
-          tmp_14 * this.get(2, 3) +
-          tmp_17 * this.get(3, 3)));
-    const out_21 =
+      (tmp12 * this.get(1, 3) +
+        tmp15 * this.get(2, 3) +
+        tmp16 * this.get(3, 3) -
+        (tmp13 * this.get(1, 3) +
+          tmp14 * this.get(2, 3) +
+          tmp17 * this.get(3, 3)));
+    const out21 =
       d *
-      (tmp_13 * this.get(0, 3) +
-        tmp_18 * this.get(2, 3) +
-        tmp_21 * this.get(3, 3) -
-        (tmp_12 * this.get(0, 3) +
-          tmp_19 * this.get(2, 3) +
-          tmp_20 * this.get(3, 3)));
-    const out_22 =
+      (tmp13 * this.get(0, 3) +
+        tmp18 * this.get(2, 3) +
+        tmp21 * this.get(3, 3) -
+        (tmp12 * this.get(0, 3) +
+          tmp19 * this.get(2, 3) +
+          tmp20 * this.get(3, 3)));
+    const out22 =
       d *
-      (tmp_14 * this.get(0, 3) +
-        tmp_19 * this.get(1, 3) +
-        tmp_22 * this.get(3, 3) -
-        (tmp_15 * this.get(0, 3) +
-          tmp_18 * this.get(1, 3) +
-          tmp_23 * this.get(3, 3)));
-    const out_23 =
+      (tmp14 * this.get(0, 3) +
+        tmp19 * this.get(1, 3) +
+        tmp22 * this.get(3, 3) -
+        (tmp15 * this.get(0, 3) +
+          tmp18 * this.get(1, 3) +
+          tmp23 * this.get(3, 3)));
+    const out23 =
       d *
-      (tmp_17 * this.get(0, 3) +
-        tmp_20 * this.get(1, 3) +
-        tmp_23 * this.get(2, 3) -
-        (tmp_16 * this.get(0, 3) +
-          tmp_21 * this.get(1, 3) +
-          tmp_22 * this.get(2, 3)));
+      (tmp17 * this.get(0, 3) +
+        tmp20 * this.get(1, 3) +
+        tmp23 * this.get(2, 3) -
+        (tmp16 * this.get(0, 3) +
+          tmp21 * this.get(1, 3) +
+          tmp22 * this.get(2, 3)));
 
-    const out_30 =
+    const out30 =
       d *
-      (tmp_14 * this.get(2, 2) +
-        tmp_17 * this.get(3, 2) +
-        tmp_13 * this.get(1, 2) -
-        (tmp_16 * this.get(3, 2) +
-          tmp_12 * this.get(1, 2) +
-          tmp_15 * this.get(2, 2)));
-    const out_31 =
+      (tmp14 * this.get(2, 2) +
+        tmp17 * this.get(3, 2) +
+        tmp13 * this.get(1, 2) -
+        (tmp16 * this.get(3, 2) +
+          tmp12 * this.get(1, 2) +
+          tmp15 * this.get(2, 2)));
+    const out31 =
       d *
-      (tmp_20 * this.get(3, 2) +
-        tmp_12 * this.get(0, 2) +
-        tmp_19 * this.get(2, 2) -
-        (tmp_18 * this.get(2, 2) +
-          tmp_21 * this.get(3, 2) +
-          tmp_13 * this.get(0, 2)));
-    const out_32 =
+      (tmp20 * this.get(3, 2) +
+        tmp12 * this.get(0, 2) +
+        tmp19 * this.get(2, 2) -
+        (tmp18 * this.get(2, 2) +
+          tmp21 * this.get(3, 2) +
+          tmp13 * this.get(0, 2)));
+    const out32 =
       d *
-      (tmp_18 * this.get(1, 2) +
-        tmp_23 * this.get(3, 2) +
-        tmp_15 * this.get(0, 2) -
-        (tmp_22 * this.get(3, 2) +
-          tmp_14 * this.get(0, 2) +
-          tmp_19 * this.get(1, 2)));
-    const out_33 =
+      (tmp18 * this.get(1, 2) +
+        tmp23 * this.get(3, 2) +
+        tmp15 * this.get(0, 2) -
+        (tmp22 * this.get(3, 2) +
+          tmp14 * this.get(0, 2) +
+          tmp19 * this.get(1, 2)));
+    const out33 =
       d *
-      (tmp_22 * this.get(2, 2) +
-        tmp_16 * this.get(0, 2) +
-        tmp_21 * this.get(1, 2) -
-        (tmp_20 * this.get(1, 2) +
-          tmp_23 * this.get(2, 2) +
-          tmp_17 * this.get(0, 2)));
+      (tmp22 * this.get(2, 2) +
+        tmp16 * this.get(0, 2) +
+        tmp21 * this.get(1, 2) -
+        (tmp20 * this.get(1, 2) +
+          tmp23 * this.get(2, 2) +
+          tmp17 * this.get(0, 2)));
 
-    this.elements[0 * 4 + 0] = out_00;
-    this.elements[0 * 4 + 1] = out_01;
-    this.elements[0 * 4 + 2] = out_02;
-    this.elements[0 * 4 + 3] = out_03;
-    this.elements[1 * 4 + 0] = out_10;
-    this.elements[1 * 4 + 1] = out_11;
-    this.elements[1 * 4 + 2] = out_12;
-    this.elements[1 * 4 + 3] = out_13;
-    this.elements[2 * 4 + 0] = out_20;
-    this.elements[2 * 4 + 1] = out_21;
-    this.elements[2 * 4 + 2] = out_22;
-    this.elements[2 * 4 + 3] = out_23;
-    this.elements[3 * 4 + 0] = out_30;
-    this.elements[3 * 4 + 1] = out_31;
-    this.elements[3 * 4 + 2] = out_32;
-    this.elements[3 * 4 + 3] = out_33;
+    this.elements[0 * 4 + 0] = out00;
+    this.elements[0 * 4 + 1] = out01;
+    this.elements[0 * 4 + 2] = out02;
+    this.elements[0 * 4 + 3] = out03;
+    this.elements[1 * 4 + 0] = out10;
+    this.elements[1 * 4 + 1] = out11;
+    this.elements[1 * 4 + 2] = out12;
+    this.elements[1 * 4 + 3] = out13;
+    this.elements[2 * 4 + 0] = out20;
+    this.elements[2 * 4 + 1] = out21;
+    this.elements[2 * 4 + 2] = out22;
+    this.elements[2 * 4 + 3] = out23;
+    this.elements[3 * 4 + 0] = out30;
+    this.elements[3 * 4 + 1] = out31;
+    this.elements[3 * 4 + 2] = out32;
+    this.elements[3 * 4 + 3] = out33;
     return this;
-  },
+  }
 
   // Returns new matrix which is the inverse of this
   inverse() {
     const tmp = this.copy();
     return tmp.invert();
-  },
+  }
 
   // In-place transpose
   transpose() {
@@ -481,7 +462,7 @@ Matrix4x4.prototype = {
     this.elements[3 * 4 + 2] = tmp;
 
     return this;
-  },
+  }
 
   loadIdentity() {
     for (let i = 0; i < 16; i++) {
@@ -493,6 +474,4 @@ Matrix4x4.prototype = {
     this.elements[3 * 4 + 3] = 1.0;
     return this;
   }
-};
-
-module.exports = Matrix4x4;
+}

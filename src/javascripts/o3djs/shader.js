@@ -24,10 +24,10 @@ o3djs.shader = o3djs.shader || {};
  * @param {!string} fragmentScriptName The name of the HTML Script node
  *     containing the fragment program.
  */
-o3djs.shader.loadFromScriptNodes = function (
+o3djs.shader.loadFromScriptNodes = function(
   gl,
   vertexScriptName,
-  fragmentScriptName,
+  fragmentScriptName
 ) {
   const vertexScript = document.getElementById(vertexScriptName);
   const fragmentScript = document.getElementById(fragmentScriptName);
@@ -42,7 +42,7 @@ o3djs.shader.loadFromScriptNodes = function (
  * @param {string} url The url of the external file.
  * @return {string} the loaded text if the request is synchronous.
  */
-o3djs.shader.loadTextFileSynchronous = function (url) {
+o3djs.shader.loadTextFileSynchronous = function(url) {
   const error = `loadTextFileSynchronous failed to load url "${url}"`;
   let request;
 
@@ -59,7 +59,7 @@ o3djs.shader.loadTextFileSynchronous = function (url) {
   return request.responseText;
 };
 
-o3djs.shader.loadFromURL = function (gl, vertexURL, fragmentURL) {
+o3djs.shader.loadFromURL = function(gl, vertexURL, fragmentURL) {
   const vertexText = o3djs.shader.loadTextFileSynchronous(vertexURL);
   const fragmentText = o3djs.shader.loadTextFileSynchronous(fragmentURL);
 
@@ -73,7 +73,7 @@ o3djs.shader.loadFromURL = function (gl, vertexURL, fragmentURL) {
  * Helper which convers GLSL names to JavaScript names.
  * @private
  */
-o3djs.shader.glslNameToJs_ = function (name) {
+o3djs.shader.glslNameToJs_ = function(name) {
   return name.replace(/_(.)/g, (_, p1) => p1.toUpperCase());
 };
 
@@ -85,7 +85,7 @@ o3djs.shader.glslNameToJs_ = function (name) {
  * @param {!string} vertex The vertex shader.
  * @param {!string} fragment The fragment shader.
  */
-o3djs.shader.Shader = function (gl, vertex, fragment) {
+o3djs.shader.Shader = function(gl, vertex, fragment) {
   this.program = gl.createProgram();
   this.gl = gl;
 
@@ -137,7 +137,7 @@ o3djs.shader.Shader = function (gl, vertex, fragment) {
 /**
  * Binds the shader's program.
  */
-o3djs.shader.Shader.prototype.bind = function () {
+o3djs.shader.Shader.prototype.bind = function() {
   this.gl.useProgram(this.program);
 };
 
@@ -145,7 +145,7 @@ o3djs.shader.Shader.prototype.bind = function () {
  * Helper for loading a shader.
  * @private
  */
-o3djs.shader.Shader.prototype.loadShader = function (type, shaderSrc) {
+o3djs.shader.Shader.prototype.loadShader = function(type, shaderSrc) {
   const shader = this.gl.createShader(type);
   if (shader == null) {
     return null;
@@ -169,7 +169,7 @@ o3djs.shader.Shader.prototype.loadShader = function (type, shaderSrc) {
  * Helper for looking up an attribute's location.
  * @private
  */
-o3djs.shader.Shader.prototype.getAttribute = function (name) {
+o3djs.shader.Shader.prototype.getAttribute = function(name) {
   return this.gl.getAttribLocation(this.program, name);
 };
 
@@ -177,6 +177,6 @@ o3djs.shader.Shader.prototype.getAttribute = function (name) {
  * Helper for looking up an attribute's location.
  * @private
  */
-o3djs.shader.Shader.prototype.getUniform = function (name) {
+o3djs.shader.Shader.prototype.getUniform = function(name) {
   return this.gl.getUniformLocation(this.program, name);
 };

@@ -1,11 +1,15 @@
-const Util = require('../util/util.js');
-const Player = require('../ui/player');
-const AnalyserView = require('../3D/visualizer');
+import $ from 'jquery';
+import Util from '../util/util';
+import Player from '../UI/player';
+import AnalyserView from '../3D/visualizer';
 
-var spec3D = {
+const spec3D = {
   cxRot: 90,
+
   drawingMode: false,
+
   prevX: 0,
+
   handleTrack(e) {
     switch (e.type) {
       case 'mousedown':
@@ -18,7 +22,7 @@ var spec3D = {
 
         if (spec3D.drawingMode == false) return false;
         var freq = spec3D.yToFreq(
-          Number(e.pageY) || Number(e.originalEvent.touches[0].pageY),
+          Number(e.pageY) || Number(e.originalEvent.touches[0].pageY)
         );
 
         if (spec3D.isPlaying()) spec3D.player.setBandpassFrequency(freq);
@@ -179,8 +183,11 @@ var spec3D = {
    * TODO(smus): Make this work properly with WebGL.
    */
   freqStart: 20,
+
   freqEnd: 20000,
+
   padding: 30,
+
   yToFreq(y) {
     const padding = spec3D.padding;
     const height = $('#spectrogram').height();
@@ -212,24 +219,28 @@ var spec3D = {
     // Apply padding, etc.
     return spec3D.padding + percent * (height - 2 * padding);
   },
+
   easeInOutCubic(t, b, c, d) {
     if ((t /= d / 2) < 1) return c / 2 * t * t * t + b;
     return c / 2 * ((t -= 2) * t * t + 2) + b;
   },
+
   easeInOutQuad(t, b, c, d) {
     if ((t /= d / 2) < 1) return c / 2 * t * t + b;
     return -c / 2 * (--t * (t - 2) - 1) + b;
   },
+
   easeInOutQuint(t, b, c, d) {
     if ((t /= d / 2) < 1) return c / 2 * t * t * t * t * t + b;
     return c / 2 * ((t -= 2) * t * t * t * t + 2) + b;
   },
+
   easeInOutExpo(t, b, c, d) {
     if (t == 0) return b;
     if (t == d) return b + c;
     if ((t /= d / 2) < 1) return c / 2 * Math.pow(2, 10 * (t - 1)) + b;
     return c / 2 * (-Math.pow(2, -10 * --t) + 2) + b;
-  },
+  }
 };
 
-module.exports = spec3D;
+export default spec3D;

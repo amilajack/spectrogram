@@ -1,12 +1,10 @@
-window.isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-  navigator.userAgent,
-);
-window.isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+import spec3D from './ui/spectrogram';
 
-const spec3D = require('./ui/spectrogram');
+window.isMobile = false
+window.isIOS = false;
 
 $(() => {
-  const parseQueryString = function () {
+  const parseQueryString = function() {
     const q = window.location.search.slice(1).split('&');
     for (let i = 0; i < q.length; ++i) {
       const qi = q[i].split('=');
@@ -16,7 +14,7 @@ $(() => {
     return q;
   };
 
-  const getLocalization = function () {
+  const getLocalization = function() {
     const q = parseQueryString();
     let lang = 'en';
     for (let i = 0; i < q.length; i++) {
@@ -40,11 +38,11 @@ $(() => {
       },
       error(err) {
         console.warn(err);
-      },
+      }
     });
   };
 
-  const startup = function () {
+  const startup = function() {
     getLocalization();
     window.parent.postMessage('ready', '*');
 
@@ -54,7 +52,7 @@ $(() => {
     $('.music-box__tool-tip').hide(0);
     $('#loadingSound').hide(0);
 
-    $('.music-box__buttons__button').click(function (e) {
+    $('.music-box__buttons__button').click(function(e) {
       sp.startRender();
 
       const wasPlaying = sp.isPlaying();
@@ -106,11 +104,11 @@ $(() => {
     window.parent.postMessage('loaded', '*');
     elm[0].addEventListener(
       'touchend',
-      (e) => {
+      e => {
         elm.addClass('hide');
         startup();
       },
-      false,
+      false
     );
   }
 });

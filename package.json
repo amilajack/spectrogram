@@ -28,10 +28,13 @@
     "gulp-sass": "^3.1.0",
     "gulp-uglify": "^3.0.0",
     "gulp-webserver": "^0.9.1",
-    "jquery": "^3.2.1"
+    "prettier": "^1.7.0"
   },
   "scripts": {
     "build": "gulp build-all && gulp",
-    "lint": "eslint ."
+    "lint": "eslint . && prettier --single-quote --write \"./src/**/*.js\""
+  },
+  "dependencies": {
+    "jquery": "^3.2.1"
   }
 }

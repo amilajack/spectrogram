@@ -1,6 +1,12 @@
 {
-    "extends": "airbnb",
+    "extends": [
+        "airbnb",
+        "prettier"
+    ],
     "env": {
         "browser": true
+    },
+    "rules": {
+        "no-mixed-operators": "off"
     }
 }

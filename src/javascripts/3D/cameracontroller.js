@@ -8,11 +8,11 @@
 //
 // The view matrix is computed elsewhere.
 //
-// opt_canvas (an HTMLCanvasElement) and opt_context (a
+// optCanvas (an HTMLCanvasElement) and optContext (a
 // WebGLRenderingContext) can be passed in to make the hit detection
 // more precise -- only opaque pixels will be considered as the start
 // of a drag action.
-function CameraController(element, opt_canvas, opt_context) {
+export default function CameraController(element, optCanvas, optContext) {
   const controller = this;
   this.onchange = null;
   this.xRot = 0;
@@ -23,19 +23,19 @@ function CameraController(element, opt_canvas, opt_context) {
   this.curX = 0;
   this.curY = 0;
 
-  if (opt_canvas) {
-    this.canvas_ = opt_canvas;
+  if (optCanvas) {
+    this.canvas_ = optCanvas;
   }
 
-  if (opt_context) {
-    this.context_ = opt_context;
+  if (optContext) {
+    this.context_ = optContext;
   }
 
   // TODO(smus): Remove this to re-introduce mouse panning.
   return;
 
   // Assign a mouse down handler to the HTML element.
-  element.onmousedown = function (ev) {
+  element.onmousedown = function(ev) {
     controller.curX = ev.clientX;
     controller.curY = ev.clientY;
     let dragging = false;
@@ -61,7 +61,7 @@ function CameraController(element, opt_canvas, opt_context) {
           1,
           1,
           controller.context_.RGBA,
-          controller.context_.UNSIGNED_BYTE,
+          controller.context_.UNSIGNED_BYTE
         );
         if (pixels) {
           // See whether this pixel has an alpha value of >= about 10%
@@ -78,12 +78,12 @@ function CameraController(element, opt_canvas, opt_context) {
   };
 
   // Assign a mouse up handler to the HTML element.
-  element.onmouseup = function (ev) {
+  element.onmouseup = function(ev) {
     controller.dragging = false;
   };
 
   // Assign a mouse move handler to the HTML element.
-  element.onmousemove = function (ev) {
+  element.onmousemove = function(ev) {
     if (controller.dragging) {
       // Determine how far we have moved since the last mouse move
       // event.
@@ -110,5 +110,3 @@ function CameraController(element, opt_canvas, opt_context) {
     }
   };
 }
-
-module.exports = CameraController;
